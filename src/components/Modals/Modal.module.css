@@ -1,0 +1,31 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: brightness(0.9);
+    -webkit-backdrop-filter: brightness(0.9); 
+}
+
+
+.modal_body {
+    background-color: white;
+    max-height: 80vh;
+    padding: 0 1.2rem 1.2rem;
+    position: relative;
+    border-radius: 0.6rem;
+    overflow-y: auto;
+    overflow-x: visible;
+    z-index: 10;
+}
+
+button.modal_dismiss {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: gainsboro;
+    font-size: 1.2rem;
+}

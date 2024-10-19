@@ -1,23 +1,16 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FiLayout, FiSettings } from "react-icons/fi";
 import { PiCodesandboxLogoLight } from "react-icons/pi";
 import { GoDatabase } from "react-icons/go";
-import { HiOutlineLogout } from "react-icons/hi";
-import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../slices/authSlice';
 import Styles from '../../pages/Dashboard/Dashboard.module.css';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { HiOutlineLogout } from 'react-icons/hi';
+import Modal from '../Modals';
+import Logout from '../Modals/Logout';
 
 const Sidebar = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const handleLogout = () => {
-        dispatch(logout());
-        toast.success('User logged out successfully');
-        navigate('/');
-    };
+    const [logout, setLogout] = useState(false);
 
     return (
         <div className={Styles.sidebar}>
@@ -55,9 +48,18 @@ const Sidebar = () => {
 
                 <div className={Styles.logout_container}>
                     <HiOutlineLogout />
-                    <button onClick={handleLogout} className={Styles.logout}>Log out</button>
+                    <button onClick={() => setLogout(true)} className={Styles.logout}>Log out</button>
                 </div>
             </div>
+
+            {
+                logout && (
+                    <Modal show={logout} onClose={() => setLogout(false)}>
+                        <Logout setLogout={setLogout} />
+                    </Modal>
+                )
+            }
+
         </div>
     );
 };

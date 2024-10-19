@@ -1,6 +1,6 @@
 export const formatDate = (dateString) => {
     const getDaySuffix = (day) => {
-      if (day > 3 && day < 21) return 'th'; // Special case for 11th to 19th
+      if (day > 3 && day < 21) return 'th';
       switch (day % 10) {
         case 1: return 'st';
         case 2: return 'nd';

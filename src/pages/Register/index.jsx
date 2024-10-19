@@ -15,15 +15,13 @@ import { registerUser } from '../../slices/authSlice';
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, token} = useSelector((state)=>state.auth);
+  const { user, token } = useSelector((state) => state.auth);
 
-  useEffect(()=>{
-    if(user && token){
+  useEffect(() => {
+    if (user && token) {
       navigate('/dashboard');
     }
-  },[user, token, navigate]);
-
-
+  }, [user, token, navigate]);
 
 
   const [showPassword, setShowPassword] = useState(false);
@@ -67,15 +65,12 @@ export default function Register() {
         if (result.type === 'auth/registerUser/fulfilled') {
           setFormData(initialValue);
           navigate('/');
-        } else {
-          toast.error('Registration failed');
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }
-
 
   return (
     <div className={Styles.register}>

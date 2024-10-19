@@ -1,0 +1,177 @@
+.add_task {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 400px;
+    min-height: 500px;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.title_label {
+    font-size: 1rem;
+    width: 100%;
+    font-weight: 500;
+    margin: 0.3rem 0;
+}
+
+.title_input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid gainsboro;
+    border-radius: 0.6rem;
+}
+
+.priority {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.priority_heading {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.priority_item {
+    display: inline-block;
+    padding: 0.8rem;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.priority_item input[type="radio"] {
+    display: none;
+}
+
+.priority_item label {
+    font-size: 0.8rem;
+    color: #333;
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+}
+
+.priority_item input[type="radio"]:checked + label {
+    border: 2px solid #317F8B;
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+}
+
+.checklists {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.checklists p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.checklist_container {
+    padding: 0.2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+ul.checklist_container li {
+    list-style: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+ul.checklist_container li span{
+    color: red;
+    cursor: pointer;
+}
+
+.checklists button {
+    color: gray;
+    font: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: white;
+    border: none;
+}
+
+.task_variables {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+.due_date {
+    cursor: pointer;
+}
+
+.date_picker_input {
+    padding: 0.5rem;
+    border: 1px solid gainsboro;
+    border-radius: 0.5rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.form_buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 50%;
+}
+
+button.cancel {
+    padding: 0.7rem 0.6rem;
+    border: 1px solid #ca3434;
+    border-radius: 0.6rem;
+    color: ca3434;
+    font-weight: 600;
+    background-color: white;
+    width: 100%;
+    cursor: pointer;
+}
+
+button.submit {
+    padding: 0.7rem 0.6rem;
+    color: white;
+    background-color: #317F8B;
+    border-radius: 0.6rem;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.due_date {
+    position: relative;
+    z-index: 1;
+}
+
+.date_picker_input {
+    padding: 0.5rem;
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
+    width: 100%;
+    width: 8rem;
+    cursor: pointer;
+    outline: none;
+    z-index: 9999;
+}
+
+
+

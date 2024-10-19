@@ -26,7 +26,7 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (credent
         if (password !== confirmPassword) {
             toast.dismiss(toastId);
             toast.error('Passwords do not match');
-            return rejectWithValue('Please fill all the required fields');
+            return rejectWithValue('Passwords do not match');
         }
 
         const response = await axios.post(REGISTER, { ...credentials });
@@ -42,8 +42,8 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (credent
     } catch (error) {
         console.log(error);
         toast.dismiss(toastId);
-        toast.error('Error during registration');
-        return rejectWithValue('Error during registration');
+        toast.error(error?.response?.data?.message || 'Error during registration');
+        return rejectWithValue(error?.response?.data?.message || 'Error during registration');
     }
 });
 
@@ -63,7 +63,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
     } catch (error) {
         console.log(error);
         toast.dismiss(toastId)
-        toast.error('Error during login');
+        toast.error(error?.response?.data?.message || 'Error during login');
         return rejectWithValue('Error during login');
     }
 });

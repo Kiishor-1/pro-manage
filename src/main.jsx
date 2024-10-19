@@ -12,7 +12,11 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Provider store={store}>
         <App />
-        <Toaster />
+        <Toaster toastOptions={{
+          style: {
+            fontFamily: 'Poppins',
+          },
+        }} />
       </Provider>
     </BrowserRouter>
   </StrictMode>,

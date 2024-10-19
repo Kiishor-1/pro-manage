@@ -1,0 +1,19 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:0 0.2rem 0;
+}
+
+.greet{
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 33px;
+    color: #282828;
+    cursor: pointer;
+}
+
+.current_date{
+    color: rgb(99, 97, 97);
+    font-size: 1rem;
+}
