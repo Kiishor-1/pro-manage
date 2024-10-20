@@ -1,4 +1,3 @@
-// Dropdown.jsx
 import React, { useState } from 'react';
 import styles from './Dropdown.module.css';
 
@@ -10,8 +9,8 @@ const Dropdown = ({ title, options, onSelect }) => {
 
   const handleSelect = (option) => {
     setSelectedOption(option);
-    onSelect(option);  // Pass the selected option to the parent
-    setIsOpen(false);  // Close the dropdown after selection
+    onSelect(option);
+    setIsOpen(false); 
   };
 
   console.log(options)

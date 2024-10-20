@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+.show_page {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    font-family: "Poppins";
+}
+
+.brand img {
+    width: 130px;
+}
+
+.task_details{
+    /* min-height: 400px; */
+    width: 546px;
+    margin: 4rem auto;
+    border: 2px solid gainsboro;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+@media screen and (max-width:768px) {
+    .show_page{
+        padding: 2rem 1rem;
+    }
+    .task_details{
+        width: 100%;
+        margin: 2rem auto;
+    }
+}
+
+.task {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 100%;
+    min-height: 12rem;
+}
+
+
+.priority_section {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0;
+}
+
+.priority_indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority {
+    font-size: 0.65rem;
+}
+
+
+.task_title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+
+.checklist_dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checklists_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    max-height: 300px;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.checklists_container::-webkit-scrollbar{
+    width: 9px;
+}
+
+.checklists_container::-webkit-scrollbar-thumb{
+    background-color: #17A2B8;
+    border-radius: 1rem;
+}
+
+.checklist {
+    list-style: none;
+    width: 100%;
+}
+
+.metrics {
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+.check_item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid gainsboro;
+    border-radius: 1rem;
+    padding: 0.5rem 0.8rem;
+    width: 100%;
+}
+
+input[type="checkbox"] {
+    height: 1.3rem;
+    width: 1.3rem;
+}
+
+.task_variables{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.date_label{
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.due_date {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    background-color: #ca3434;
+    border-radius: 0.5rem;
+    color: white;
+    border: 1px solid red;
+}
+
+
+.error_message{
+    font-size: 2rem;
+    padding: 1rem;
+}

@@ -83,13 +83,13 @@ export default function Login() {
           <p className={Styles.heading}>Login</p>
           <div className={Styles.inputs}>
             <div>
-              <input type="email" name='email' value={formData.email} onChange={handleChange} />
+              <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <HiOutlineEnvelope />
               </span>
             </div>
             <div>
-              <input type={`${showPassword ? "text" : "password"}`} name='password' value={formData.password} onChange={handleChange} />
+              <input type={`${showPassword ? "text" : "password"}`} name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <SlLock />
               </span>

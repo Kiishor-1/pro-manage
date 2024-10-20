@@ -9,8 +9,9 @@ const {
     GET_ALL_TASKS,
     GET_TASK_DETAILS,
     UPDATE_TASK,
-    DELETE_TASK
-    , UPDATE_CATEGORY
+    DELETE_TASK,
+    UPDATE_CATEGORY,
+    ANALYTICS,
 } = TASK_ENDPOINTS;
 
 const { ADD_PEOPLE } = USER_ENDPOINTS;
@@ -19,7 +20,7 @@ const { ADD_PEOPLE } = USER_ENDPOINTS;
 // Create Task thunk
 export const createTask = createAsyncThunk('tasks/createTask', async (taskData, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Creating Task...");
-    const { token } = getState().auth; // Get token from auth state
+    const { token } = getState().auth;
     console.log('taskdata', taskData)
     try {
         const response = await axios.post(CREATE_TASK, taskData, {
@@ -108,7 +109,7 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
     const { token } = getState().auth;
 
     console.log("id", taskId);
-    console.log("Update Data:", updateData); // Add this line to verify updateData)
+    console.log("Update Data:", updateData);
 
     try {
         const response = await axios.put(UPDATE_TASK(taskId), updateData, {
@@ -197,7 +198,7 @@ export const updateTaskCategory = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
-            return response.data; // Assuming the API response contains the updated task
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update task category');
         }
@@ -206,8 +207,8 @@ export const updateTaskCategory = createAsyncThunk(
 
 export const fetchFilteredTasks = createAsyncThunk(
     'tasks/fetchFilteredTasks',
-    async (filter, { rejectWithValue,getState }) => {
-        const {token} = getState().auth;
+    async (filter, { rejectWithValue, getState }) => {
+        const { token } = getState().auth;
         try {
             const response = await axios.get(`${GET_ALL_TASKS}?filter=${filter}`, {
 
@@ -215,8 +216,8 @@ export const fetchFilteredTasks = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
 
-            }); 
-            console.log('response',response.data);
+            });
+            console.log('response', response.data);
             return response.data.tasks;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch tasks');
@@ -224,7 +225,26 @@ export const fetchFilteredTasks = createAsyncThunk(
     }
 );
 
-// Task slice
+
+export const fetchAnalytics = createAsyncThunk(
+    'tasks/fetchAnalytics',
+    async (_, { rejectWithValue, getState }) => {
+        try {
+            const { token } = getState().auth;
+            const response = await axios.get(ANALYTICS, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            });
+            return response.data.analytics;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+
 const taskSlice = createSlice({
     name: 'tasks',
     initialState: {
@@ -232,11 +252,11 @@ const taskSlice = createSlice({
         task: null,
         loading: false,
         error: null,
+        analytics: null
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Create Task
             .addCase(createTask.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -248,9 +268,9 @@ const taskSlice = createSlice({
             .addCase(createTask.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
 
-            // Fetch Tasks
+        builder
             .addCase(fetchUserTasks.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -262,9 +282,9 @@ const taskSlice = createSlice({
             .addCase(fetchUserTasks.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
 
-            // Get Task Details
+        builder
             .addCase(getTaskDetails.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -276,13 +296,13 @@ const taskSlice = createSlice({
             .addCase(getTaskDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
 
-            // Update Task
-            .addCase(updateTask.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
+
+        builder.addCase(updateTask.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
             .addCase(updateTask.fulfilled, (state, action) => {
                 state.loading = false;
                 const index = state.tasks.findIndex(task => task._id === action.payload._id);
@@ -295,11 +315,11 @@ const taskSlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Delete Task
-            .addCase(deleteTask.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
+
+        builder.addCase(deleteTask.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
             .addCase(deleteTask.fulfilled, (state, action) => {
                 state.loading = false;
                 state.tasks = state.tasks.filter(task => task._id !== action.payload);
@@ -307,7 +327,9 @@ const taskSlice = createSlice({
             .addCase(deleteTask.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
+
+        builder
             .addCase(addPeople.pending, (state) => {
                 state.loading = true;
                 state.status = 'loading';
@@ -316,16 +338,17 @@ const taskSlice = createSlice({
             .addCase(addPeople.fulfilled, (state, action) => {
                 state.loading = false;
                 state.status = 'succeeded';
-                // Handle any necessary state updates related to the task here
             })
             .addCase(addPeople.rejected, (state, action) => {
                 state.loading = false;
                 state.status = 'failed';
                 state.error = action.payload;
-            }).addCase(updateTaskCategory.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
+            });
+
+        builder.addCase(updateTaskCategory.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
             .addCase(updateTaskCategory.fulfilled, (state, action) => {
                 state.loading = false;
                 const updatedTask = action.payload;
@@ -337,10 +360,10 @@ const taskSlice = createSlice({
             .addCase(updateTaskCategory.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            })
-            .addCase(fetchFilteredTasks.pending, (state) => {
-                state.loading = true;
-            })
+            });
+        builder.addCase(fetchFilteredTasks.pending, (state) => {
+            state.loading = true;
+        })
             .addCase(fetchFilteredTasks.fulfilled, (state, action) => {
                 state.loading = false;
                 state.tasks = action.payload;
@@ -348,6 +371,17 @@ const taskSlice = createSlice({
             .addCase(fetchFilteredTasks.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            });
+        builder.addCase(fetchAnalytics.pending, (state) => {
+            state.loading = true;
+        })
+            .addCase(fetchAnalytics.fulfilled, (state, action) => {
+                state.analytics = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchAnalytics.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
             });
     },
 });

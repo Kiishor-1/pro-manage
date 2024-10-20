@@ -89,19 +89,19 @@ export default function Register() {
           <p className={Styles.heading}>Register</p>
           <div className={Styles.inputs}>
             <div className="">
-              <input type="text" name='name' value={formData.name} onChange={handleChange} />
+              <input type="text" name='name' placeholder='Name' value={formData.name} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <HiOutlineUser />
               </span>
             </div>
             <div className="">
-              <input type="email" name='email' value={formData.email} onChange={handleChange} />
+              <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <HiOutlineEnvelope />
               </span>
             </div>
             <div className="">
-              <input type={`${showPassword ? "text" : "password"}`} name='password' value={formData.password} onChange={handleChange} />
+              <input type={`${showPassword ? "text" : "password"}`} name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <SlLock />
               </span>
@@ -110,7 +110,7 @@ export default function Register() {
               </span>
             </div>
             <div className="">
-              <input type={`${showConfirmPassword ? "text" : "password"}`} name='confirmPassword' value={formData.confirmPassword} onChange={handleChange} />
+              <input type={`${showConfirmPassword ? "text" : "password"}`} name='confirmPassword' placeholder='Confirm Password' value={formData.confirmPassword} onChange={handleChange} />
               <span className={Styles.icon1}>
                 <SlLock />
               </span>

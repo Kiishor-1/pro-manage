@@ -8,17 +8,16 @@ import { fetchFilteredTasks } from '../../../slices/taskSlice';
 
 export default function FilterPage() {
     const [addPeopleModal, setAddPeopleModal] = useState(false);
-    const [filter, setFilter] = useState(localStorage.getItem('taskFilter') || 'today'); // Load from local storage
+    const [filter, setFilter] = useState(localStorage.getItem('taskFilter') || 'today');
     const dispatch = useDispatch();
 
-    // Fetch tasks whenever the filter changes
     useEffect(() => {
-        dispatch(fetchFilteredTasks(filter)); // Dispatch the thunk
-        localStorage.setItem('taskFilter', filter); // Save to local storage
+        dispatch(fetchFilteredTasks(filter));
+        localStorage.setItem('taskFilter', filter);
     }, [filter, dispatch]);
 
     const handleFilterChange = (e) => {
-        setFilter(e.target.value); // Update filter
+        setFilter(e.target.value);
     };
 
     return (
@@ -35,7 +34,7 @@ export default function FilterPage() {
                     name="filter"
                     className={Styles.filter}
                     value={filter}
-                    onChange={handleFilterChange} // Update filter when user changes selection
+                    onChange={handleFilterChange}
                 >
                     <option value="today">Today</option>
                     <option value="week">Week</option>

@@ -18,10 +18,23 @@ export default function TaskCategory({ title, tasks }) {
 
     useEffect(() => {
         const taskCategoryElement = taskCategoryRef.current;
-        if (taskCategoryElement) {
+        if (!taskCategoryElement) return;
+
+        const updateScrollStatus = () => {
             setHasScroll(taskCategoryElement.scrollHeight > taskCategoryElement.clientHeight);
-        }
-    }, [tasks]);
+        };
+
+        updateScrollStatus();
+
+        const resizeObserver = new ResizeObserver(() => {
+            updateScrollStatus();
+        });
+
+        resizeObserver.observe(taskCategoryElement);
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [tasks]); 
 
     return (
         <div className={Styles.wrapper}>
