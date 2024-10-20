@@ -23,9 +23,10 @@
 
 .title_input {
     width: 100%;
-    padding: 0.6rem;
-    border: 1px solid gainsboro;
-    border-radius: 0.6rem;
+    font-size: 1rem;
+    padding: 0.5rem 0.5rem;
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
 }
 
 .priority {
@@ -36,7 +37,7 @@
 }
 
 .priority_heading {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
@@ -75,7 +76,8 @@
 }
 
 .checklists p {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     margin: 0;
 }
 
@@ -173,5 +175,83 @@ button.submit {
     z-index: 9999;
 }
 
+.assignee{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user_dp{
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.user_dp img{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+}
+
+.assignee_heading{
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.dropdown{
+    padding: 0.5rem 0.5rem;
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
+    flex: 1;
+    position: relative;
+}
+
+.dropdown_button{
+    cursor: pointer;
+}
+
+.dropdown_menu{
+    position: absolute;
+    background-color: white;
+    top: 2.7rem;
+    right: 0rem;
+    width: 100%;
+    border: 2px solid gainsboro;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    height: 15rem;
+}
+
+.dropdown_menu::-webkit-scrollbar{
+    width: 8px;
+}
+
+.dropdown_menu::-webkit-scrollbar-thumb{
+    background-color: #77a0baa5;
+    border-radius: 1rem;
+}
+
+.dropdown_item{
+    padding: 0.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
 
 
+.dropdown_item button{
+    padding: 0.4rem 3.5rem;
+    background-color: white;
+    border-radius: 0.4rem;
+    border: 1px solid gainsboro;
+}
+
+.b{
+    background-color: #efe1e3;
+    border: 1px solid #E2E2E2;
+    background: #FFEBEB;
+
+}

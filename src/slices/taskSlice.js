@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { TASK_ENDPOINTS } from '../services/api';
+import { USER_ENDPOINTS } from '../services/api';
 
 const {
     CREATE_TASK,
@@ -9,14 +10,17 @@ const {
     GET_TASK_DETAILS,
     UPDATE_TASK,
     DELETE_TASK
+    , UPDATE_CATEGORY
 } = TASK_ENDPOINTS;
+
+const { ADD_PEOPLE } = USER_ENDPOINTS;
 
 
 // Create Task thunk
 export const createTask = createAsyncThunk('tasks/createTask', async (taskData, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Creating Task...");
     const { token } = getState().auth; // Get token from auth state
-    console.log('taskdata',taskData)
+    console.log('taskdata', taskData)
     try {
         const response = await axios.post(CREATE_TASK, taskData, {
             headers: {
@@ -65,7 +69,7 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
         console.log(error);
         toast.dismiss(toastId);
         toast.error(error?.response?.data?.message || 'Error fetching tasks');
-        return rejectWithValue(error?.response?.data?.message  ||'Error fetching tasks');
+        return rejectWithValue(error?.response?.data?.message || 'Error fetching tasks');
     }
 });
 
@@ -92,19 +96,25 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
     } catch (error) {
         console.log(error)
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message ||'Error fetching task details');
+        toast.error(error?.response?.data?.message || 'Error fetching task details');
         return rejectWithValue(error?.response?.data?.message || 'Error fetching task details');
     }
 });
+
 
 // Update Task thunk
 export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, updateData }, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Updating Task...");
     const { token } = getState().auth;
+
+    console.log("id", taskId);
+    console.log("Update Data:", updateData); // Add this line to verify updateData)
+
     try {
         const response = await axios.put(UPDATE_TASK(taskId), updateData, {
             headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         });
 
@@ -118,12 +128,12 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
         toast.success('Task updated successfully');
         return response.data.task;
     } catch (error) {
-        console.log(error)
         toast.dismiss(toastId);
         toast.error(error?.response?.data?.message || 'Error updating task');
         return rejectWithValue(error?.response?.data?.message || 'Error updating task');
     }
 });
+
 
 // Delete Task thunk
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { rejectWithValue, getState }) => {
@@ -136,7 +146,7 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { 
             },
         });
 
-        console.log('Delete response',response.data);
+        console.log('Delete response', response.data);
 
         if (!response.data.success) {
             toast.dismiss(toastId);
@@ -150,10 +160,69 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { 
     } catch (error) {
         console.log(error);
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message  || 'Error deleting task');
+        toast.error(error?.response?.data?.message || 'Error deleting task');
         return rejectWithValue(error?.response?.data?.message || 'Error deleting task');
     }
 });
+
+
+export const addPeople = createAsyncThunk(
+    'tasks/addPeople',
+    async (selectedUser, { rejectWithValue, getState }) => {
+        const { token } = getState().auth;
+        const toastId = toast.loading('Adding people to workspace');
+        try {
+            const response = await axios.post(ADD_PEOPLE, { email: selectedUser }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.dismiss(toastId)
+            return response.data;
+        } catch (error) {
+            toast.dismiss(toastId)
+            toast.error(error.response?.data?.message)
+            return rejectWithValue(error.response?.data?.message || 'Failed to add people to tasks');
+        }
+    }
+);
+
+export const updateTaskCategory = createAsyncThunk(
+    'tasks/updateTaskCategory',
+    async ({ taskId, newCategory }, { rejectWithValue, getState }) => {
+        const { token } = getState().auth;
+        try {
+            const response = await axios.patch(UPDATE_CATEGORY(taskId), { category: newCategory }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data; // Assuming the API response contains the updated task
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to update task category');
+        }
+    }
+);
+
+export const fetchFilteredTasks = createAsyncThunk(
+    'tasks/fetchFilteredTasks',
+    async (filter, { rejectWithValue,getState }) => {
+        const {token} = getState().auth;
+        try {
+            const response = await axios.get(`${GET_ALL_TASKS}?filter=${filter}`, {
+
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            }); 
+            console.log('response',response.data);
+            return response.data.tasks;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to fetch tasks');
+        }
+    }
+);
 
 // Task slice
 const taskSlice = createSlice({
@@ -236,6 +305,47 @@ const taskSlice = createSlice({
                 state.tasks = state.tasks.filter(task => task._id !== action.payload);
             })
             .addCase(deleteTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(addPeople.pending, (state) => {
+                state.loading = true;
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(addPeople.fulfilled, (state, action) => {
+                state.loading = false;
+                state.status = 'succeeded';
+                // Handle any necessary state updates related to the task here
+            })
+            .addCase(addPeople.rejected, (state, action) => {
+                state.loading = false;
+                state.status = 'failed';
+                state.error = action.payload;
+            }).addCase(updateTaskCategory.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateTaskCategory.fulfilled, (state, action) => {
+                state.loading = false;
+                const updatedTask = action.payload;
+                const taskIndex = state.tasks.findIndex((task) => task._id === updatedTask._id);
+                if (taskIndex !== -1) {
+                    state.tasks[taskIndex] = updatedTask;
+                }
+            })
+            .addCase(updateTaskCategory.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchFilteredTasks.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchFilteredTasks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tasks = action.payload;
+            })
+            .addCase(fetchFilteredTasks.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

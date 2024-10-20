@@ -11,4 +11,10 @@ export const TASK_ENDPOINTS = {
     GET_TASK_DETAILS: (id) => `${BASE_URL}/tasks/${id}`,
     UPDATE_TASK: (id) => `${BASE_URL}/tasks/update/${id}`,
     DELETE_TASK: (id) => `${BASE_URL}/tasks/delete/${id}`,
+    UPDATE_CATEGORY:(id)=>`${BASE_URL}/tasks/update/${id}/category`,
+}
+
+export const USER_ENDPOINTS = {
+    GET_ALL_USERS:`${BASE_URL}/users`,
+    ADD_PEOPLE:`${BASE_URL}/users/add-people`,
 }

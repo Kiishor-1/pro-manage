@@ -150,3 +150,35 @@ input[type="checkbox"] {
     border-radius: 0.5rem;
     color: white;
 }
+
+.loadingSpinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #17A2B8; /* Adjust to match your theme */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.category_button {
+    background-color: transparent;
+    border: none;
+    /* border: 1px solid #17A2B8; */
+    /* padding: 5px 10px; */
+    color: #030e0e;
+    /* font-weight: 500; */
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.category_button:hover {
+    background-color: #17A2B8;
+    color: white;
+    /* border:1px solid red; */
+}

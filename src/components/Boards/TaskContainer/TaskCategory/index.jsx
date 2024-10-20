@@ -5,11 +5,9 @@ import { HiMiniPlus } from "react-icons/hi2";
 import { useState, useEffect, useRef } from 'react';
 import Modal from '../../../Modals';
 import AddTask from '../../../Modals/AddTask';
-import EditTask from '../../../Modals/EditTask';
 
 export default function TaskCategory({ title, tasks }) {
     const [addTask, setAddTask] = useState(false);
-    const [editTask, setEditTask] = useState(false);
     const taskCategoryRef = useRef(null);
     const [hasScroll, setHasScroll] = useState(false);
     const [collapseAll, setCollapseAll] = useState(true);
@@ -46,7 +44,6 @@ export default function TaskCategory({ title, tasks }) {
                                     id={id}
                                     key={task._id}
                                     task={task}
-                                    setEditTask={setEditTask}
                                     collapseAll={collapseAll}
                                 />
                             ))
@@ -60,12 +57,6 @@ export default function TaskCategory({ title, tasks }) {
                 addTask &&
                 <Modal show={addTask} onClose={() => setAddTask(false)}>
                     <AddTask setAddTask={setAddTask} />
-                </Modal>
-            }
-            {
-                editTask &&
-                <Modal show={editTask} onClose={() => setEditTask(false)}>
-                    <EditTask setEditTask={setEditTask} />
                 </Modal>
             }
         </div>
