@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 0.5rem;
+    /* gap: 0.5rem; */
 }
 
 .authBannerSection h2 {
@@ -28,6 +28,7 @@
     font-size: 33.08px;
     line-height: 66.15px;
     text-align: center;
+    margin: 0;
 }
 
 .authBannerSection p {
@@ -35,6 +36,7 @@
     font-size: 19.29px;
     line-height: 38.59px;
     text-align: center;
+    margin: 0;
 }
 
 .auth_image_container {

@@ -14,7 +14,7 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate }) {
     const [collapseAll, setCollapseAll] = useState(true);
 
     const handleCollapseAll = () => {
-        setCollapseAll(true);
+        setCollapseAll((prev) => !prev);
     };
 
     useEffect(() => {
