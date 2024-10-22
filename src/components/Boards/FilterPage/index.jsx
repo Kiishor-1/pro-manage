@@ -3,7 +3,9 @@ import { LuUsers2 } from "react-icons/lu";
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilteredTasks } from '../../../slices/taskSlice';
-import { HiOutlineChevronDown } from 'react-icons/hi2';
+import { FaChevronDown } from "react-icons/fa";
+import Modal from '../../Modals';
+import AddPeopleModal from '../../Modals/AddPeople';
 
 export default function FilterPage() {
     const [addPeopleModal, setAddPeopleModal] = useState(false);
@@ -19,7 +21,7 @@ export default function FilterPage() {
 
     const handleFilterChange = (value) => {
         setFilter(value);
-        setIsDropdownOpen(false); 
+        setIsDropdownOpen(false);
     };
 
     return (
@@ -35,14 +37,13 @@ export default function FilterPage() {
                 </section>
             </div>
 
-            {/* Dropdown container */}
             <div className={Styles.dropdown_container}>
                 <div
                     className={Styles.dropdown_toggle}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                     {filter === 'today' ? 'Today' : filter === 'week' ? 'This Week' : 'This Month'}
-                    <HiOutlineChevronDown className={Styles.chevron_icon} />
+                    <FaChevronDown className={Styles.chevron_icon} />
                 </div>
 
                 {isDropdownOpen && (
