@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from 'react-redux';
 import { createTask } from '../../../slices/taskSlice';
 import { FaTrash } from 'react-icons/fa6';
+import Checkbox from '../../common/Checkbox';
 
 export default function AddTask({ setAddTask }) {
     const dispatch = useDispatch();
@@ -17,9 +18,6 @@ export default function AddTask({ setAddTask }) {
     };
 
     const [formData, setFormdata] = useState(initialData);
-    const [tasks, setTasks] = useState([]);
-    const [newTask, setNewTask] = useState(""); 
-    const [showNewTaskInput, setShowNewTaskInput] = useState(false);
 
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -30,21 +28,36 @@ export default function AddTask({ setAddTask }) {
     };
 
     const handleTaskAddition = () => {
-        if (newTask.trim()) {
-            const updatedTasks = [...tasks, newTask];
-            setTasks(updatedTasks);
-            setFormdata((prev) => ({
-                ...prev,
-                checkLists: updatedTasks,
-            }));
-            setNewTask("");
-            setShowNewTaskInput(false);
-        }
+        const newChecklistItem = { tag: "", isDone: false };
+        const updatedChecklists = [...formData.checkLists, newChecklistItem];
+        setFormdata((prev) => ({
+            ...prev,
+            checkLists: updatedChecklists,
+        }));
     };
 
-    const handleTaskDeletion = (taskToDelete) => {
-        const updatedTasks = tasks.filter(task => task !== taskToDelete);
-        setTasks(updatedTasks);
+    const handleChecklistNameChange = (index, newTag) => {
+        const updatedChecklists = [...formData.checkLists];
+        updatedChecklists[index].tag = newTag;
+        setFormdata((prev) => ({
+            ...prev,
+            checkLists: updatedChecklists,
+        }));
+    };
+
+
+    const handleTaskToggle = (index) => {
+        const updatedTasks = [...formData.checkLists];
+        updatedTasks[index].isDone = !updatedTasks[index].isDone;
+        setFormdata((prev) => ({
+            ...prev,
+            checkLists: updatedTasks,
+        }));
+    };
+
+
+    const handleTaskDeletion = (index) => {
+        const updatedTasks = formData.checkLists.filter((_, i) => i !== index);
         setFormdata((prev) => ({
             ...prev,
             checkLists: updatedTasks,
@@ -60,18 +73,21 @@ export default function AddTask({ setAddTask }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('formdate',formData)
+        console.log('formdata', formData);
         await dispatch(createTask(formData)).then(res => {
-            console.log(res);
+            if (res.type === 'tasks/createTask/fulfilled') {
+                setAddTask(false);
+            }
         }).catch(error => {
             console.log(error);
-        })
+        });
     };
 
     return (
         <form onSubmit={handleSubmit} className={Styles.add_task}>
+            {/* Title Section */}
             <section className={Styles.title}>
-                <label className={Styles.title_label} htmlFor="">Title</label>
+                <label className={Styles.title_label}>Title</label>
                 <input
                     className={Styles.title_input}
                     type="text"
@@ -92,9 +108,7 @@ export default function AddTask({ setAddTask }) {
                         value="HIGH-PRIORITY"
                         onChange={handleChange}
                     />
-                    <label htmlFor="high">
-                        HIGH PRIORITY
-                    </label>
+                    <label htmlFor="high">HIGH PRIORITY</label>
                 </div>
                 <div className={Styles.priority_item}>
                     <input
@@ -104,9 +118,7 @@ export default function AddTask({ setAddTask }) {
                         value="MODERATE-PRIORITY"
                         onChange={handleChange}
                     />
-                    <label htmlFor="moderate">
-                        MODERATE PRIORITY
-                    </label>
+                    <label htmlFor="moderate">MODERATE PRIORITY</label>
                 </div>
                 <div className={Styles.priority_item}>
                     <input
@@ -116,46 +128,50 @@ export default function AddTask({ setAddTask }) {
                         value="LOW-PRIORITY"
                         onChange={handleChange}
                     />
-                    <label htmlFor="low">
-                        LOW PRIORITY
-                    </label>
+                    <label htmlFor="low">LOW PRIORITY</label>
                 </div>
             </section>
 
+
             <section className={Styles.checklists}>
-                <p>Checklist ({tasks.length}/{tasks.length})</p>
+                <p>
+                    Checklist ({formData.checkLists.filter(item => item.isDone).length}/{formData.checkLists.length})
+                </p>
                 <ul className={Styles.checklist_container}>
-                    {tasks.map((task, index) => (
-                        <li key={index}>
-                            {task} 
+                    {formData.checkLists.map((task, index) => (
+                        <li key={index} className={Styles.checklist_item}>
+                           
+                                {/* <input
+                                    type="checkbox"
+                                    checked={task.isDone}
+                                    onChange={() => handleTaskToggle(index)}
+                                /> */}
+                                <Checkbox
+                                    isChecked={task?.isDone}
+                                    labelId={index}
+                                    onChange={()=>handleTaskToggle(index)}
+                                />
+                                <input
+                                    type="text"
+                                    className={Styles.checklist_input}
+                                    placeholder="Add a task"
+                                    value={task.tag}
+                                    onChange={(e) => handleChecklistNameChange(index, e.target.value)}
+                                />
+                            
                             <span>
-                            <FaTrash 
-                                className={Styles.delete_icon} 
-                                onClick={() => handleTaskDeletion(task)}
-                            />
+                                <FaTrash
+                                    className={Styles.delete_icon}
+                                    onClick={() => handleTaskDeletion(index)}
+                                />
                             </span>
                         </li>
                     ))}
                 </ul>
 
-                <button type="button" onClick={() => setShowNewTaskInput(true)}>
-                    <HiMiniPlus />
-                    Add new
+                <button className={Styles.add_checklist_btn} type="button" onClick={handleTaskAddition}>
+                    + Add New
                 </button>
-
-                {showNewTaskInput && (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Enter new task"
-                            value={newTask}
-                            onChange={(e) => setNewTask(e.target.value)}
-                        />
-                        <button type="button" onClick={handleTaskAddition}>
-                            Add Task
-                        </button>
-                    </div>
-                )}
             </section>
 
             <section className={Styles.task_variables}>
@@ -166,6 +182,7 @@ export default function AddTask({ setAddTask }) {
                         placeholderText="Select Due Date"
                         dateFormat="yyyy/MM/dd"
                         className={Styles.date_picker_input}
+                        popperPlacement="bottom-start"
                     />
                 </div>
 
@@ -177,3 +194,4 @@ export default function AddTask({ setAddTask }) {
         </form>
     );
 }
+

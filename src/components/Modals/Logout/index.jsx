@@ -8,10 +8,15 @@ export default function Logout({ setLogout }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleLogout = () => {
-        dispatch(logout());
-        toast.success('User logged out successfully');
-        navigate('/');
-    };
+        const result = dispatch(logout());
+        if (result) {
+          toast.success('User logged out successfully');
+          setLogout(false);
+          navigate('/');
+        } else {
+          toast.error('Logout failed');
+        }
+      };
 
     return (
         <section className={Styles.logout}>

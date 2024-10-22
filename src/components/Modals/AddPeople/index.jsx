@@ -7,13 +7,13 @@ import axios from 'axios';
 import { addPeople } from '../../../slices/taskSlice';
 
 
-const {GET_ALL_USERS} = USER_ENDPOINTS;
+const { GET_ALL_USERS } = USER_ENDPOINTS;
 
 export default function AddPeopleModal({ setAddPeopleModal }) {
     const [success, setSuccess] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth); 
+    const { user } = useSelector((state) => state.auth);
 
     const [users, setUsers] = useState([]);
     useEffect(() => {
@@ -21,15 +21,15 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
             try {
                 const response = await axios.get(GET_ALL_USERS);
                 console.log(response.data.users);
-                setUsers(response.data.users); 
+                setUsers(response.data.users);
             } catch (error) {
-                console.error("Error fetching users:", error); 
+                console.error("Error fetching users:", error);
             }
         };
-        fetchAllusers(); 
+        fetchAllusers();
     }, []);
 
-    const allUsers = users.filter((currUser)=>currUser._id !== user._id);
+    const allUsers = users.filter((currUser) => currUser._id !== user._id);
     console.log(allUsers);
 
     const handleSelectUser = (user) => {
@@ -39,12 +39,12 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (selectedUser) {
-            dispatch(addPeople(selectedUser)).then(res=>{
-                if(res.type === 'tasks/addPeople/fulfilled'){
+            dispatch(addPeople(selectedUser)).then(res => {
+                if (res.type === 'tasks/addPeople/fulfilled') {
                     setSuccess(true);
                 }
-                
-            }).catch(err=>{
+
+            }).catch(err => {
                 console.log(err);
             })
         }
@@ -69,7 +69,8 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                     </label>
                     <Dropdown
                         title="Select a user"
-                        options={allUsers.map((user) => user.email)}
+                        options={allUsers.map((user) => { return { email: user.email, name: user?.name } }
+                        )}
                         onSelect={handleSelectUser}
                     />
                     <div className={Styles.form_buttons}>

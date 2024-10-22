@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import Modal from '../Modals';
 import Logout from '../Modals/Logout';
+import Logo from '../../assets/images/brand.png'
 
 const Sidebar = () => {
     const [logout, setLogout] = useState(false);
@@ -15,7 +16,8 @@ const Sidebar = () => {
     return (
         <div className={Styles.sidebar}>
             <Link className={Styles.dashHome} to={"/"}>
-                <PiCodesandboxLogoLight />
+                {/* <PiCodesandboxLogoLight /> */}
+                <img src={Logo} alt="" />
                 Pro Manage
             </Link>
 

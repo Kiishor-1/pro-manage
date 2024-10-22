@@ -5,10 +5,12 @@ import { SlLock } from 'react-icons/sl';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Settings() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -29,6 +31,12 @@ export default function Settings() {
       newPassword: "",
     });
   }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setFormData((prev) => {

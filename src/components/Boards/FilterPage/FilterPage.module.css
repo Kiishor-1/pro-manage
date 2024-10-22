@@ -1,11 +1,11 @@
-.filter_page{
+.filter_page {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
 }
 
-.page_name{
+.page_name {
     font-size: 29px;
     line-height: 43.5px;
     font-weight: 500;
@@ -16,26 +16,79 @@
     gap: 0.4rem;
 }
 
-.add_people{
-    font-size: 1rem;
-    columns: gray;
-    font-weight: 400;
+.add_people_section {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
     cursor: pointer;
 }
 
-.filter_container{
+.add_people {
+    font-size: 1rem;
+    columns: gray;
+    font-weight: 400;
+}
+
+.add_people_btn {
+    font-size: 0.8rem;
+    color: #7a7878;
+}
+
+.dropdown_container {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    padding: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 24px;
+    cursor: pointer;
 }
 
-.filter{
-    border: none;
-    outline: none;
+.dropdown_toggle {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     min-width: 5rem;
 }
 
-.filter option{
+.chevron_icon {
+    margin-left: 10px;
+}
+
+.dropdown_menu {
+    position: absolute;
+    top: 100%;
+    /* left: 0; */
+    right: 1rem;
+    z-index: 11;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border-radius: 12px;
+    width: 151px;
+    min-height: 120px;
+    box-shadow: 0px 2px 22px 0px #63191940;
+}
+
+.dropdown_item {
+    padding: 10px;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown_item:hover {
+    background-color: #f0f0f0;
+}
+
+.filter option {
     padding: 0.5rem 1rem;
     text-align: center;
 }

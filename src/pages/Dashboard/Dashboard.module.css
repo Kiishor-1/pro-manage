@@ -48,6 +48,9 @@
     width: 100%;
     background-color: transparent;
     transition: background-color 0.3s ease;
+    font-size: 1rem;
+    line-height: 24px;
+    font-weight: 500;
 }
 
 .nav_item:hover {
@@ -57,7 +60,6 @@
 .active {
     color: black;
     font-weight: 500;
-    /* font-size: 1.1rem; */
     background-color: #4391ED1A;
 }
 

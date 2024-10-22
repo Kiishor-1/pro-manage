@@ -8,16 +8,18 @@ import DeleteTask from '../../../Modals/DeleteTask';
 import Modal from '../../../Modals';
 import EditTask from '../../../Modals/EditTask';
 import toast from 'react-hot-toast';
+import { TbSquareRoundedCheckFilled, TbSquareRoundedFilled } from 'react-icons/tb';
+import Checkbox from '../../../common/Checkbox';
+import separateCamelCase from '../../../../helpers/camelCase';
 
-
-export default function TaskCard({ task, collapseAll }) {
+export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     const [openChecklist, setOpenChecklist] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [deleteTask, setDeleteTask] = useState(false);
     const [editTask, setEditTask] = useState(false);
-    const [loadingCategory, setLoadingCategory] = useState(false);
+    const [loadingCategories, setLoadingCategories] = useState({});
     const [copied, setCopied] = useState(false);
 
     const handleChecklistDropdown = () => {
@@ -29,10 +31,16 @@ export default function TaskCard({ task, collapseAll }) {
     };
 
     const handleCategoryUpdate = async (newCategory) => {
-        setLoadingCategory(true);
+        setLoadingCategories((prev) => ({ ...prev, [newCategory]: true }));
+
         await dispatch(updateTaskCategory({ taskId: task._id, newCategory }))
-            .then(() => setLoadingCategory(false))
-            .catch(() => setLoadingCategory(false));
+            .then(() => {
+                setLoadingCategories((prev) => ({ ...prev, [newCategory]: false }));
+                onCategoryUpdate();
+            })
+            .catch(() => {
+                setLoadingCategories((prev) => ({ ...prev, [newCategory]: false }));
+            });
     };
 
 
@@ -73,6 +81,29 @@ export default function TaskCard({ task, collapseAll }) {
         setOpenChecklist(!collapseAll);
     }, [collapseAll]);
 
+
+    const getDueDateClass = () => {
+        if (!task?.dueDate) {
+            return Styles.due_date_placeholder;
+        }
+
+        if (task.category === 'Done') {
+            return Styles.done_task;
+        }
+
+        const dueDateObj = new Date(task.dueDate);
+        const currentDate = new Date();
+
+        if (dueDateObj < currentDate) {
+            return ['Backlog', 'InProgress', 'ToDo'].includes(task.category)
+                ? Styles.due_date
+                : Styles.done_task;
+        }
+
+        return Styles.due_date;
+    };
+
+
     return (
         <div className={Styles.task}>
             <section className={Styles.task_header}>
@@ -81,7 +112,11 @@ export default function TaskCard({ task, collapseAll }) {
                     <span className={Styles.priority}>{task?.priority.replace(/-/g, ' ').toUpperCase()}</span>
                     {
                         task?.assignee &&
-                        <img src={`https://ui-avatars.com/api/?name=${task?.assignee?.name || "User"}`} className={Styles.task_assignee} alt="User Avatar" />
+                        <img
+                            src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${task?.assignee?.name || "User"}`}
+                            alt="User Avatar"
+                            className={Styles.task_assignee}
+                        />
                     }
                 </aside>
                 <aside className={Styles.options}>
@@ -100,7 +135,9 @@ export default function TaskCard({ task, collapseAll }) {
             <p className={Styles.task_title}>{task?.title}</p>
             <section className={Styles.checklists}>
                 <div className={Styles.checklist_dropdown}>
-                    <p className={Styles.metrics}>Checklist ({task?.checkLists.length}/{task?.checkLists.length})</p>
+                    <p className={Styles.metrics}>
+                        Checklist ({task?.checkLists.filter(item => item.isDone).length}/{task?.checkLists.length})
+                    </p>
                     <span className={Styles.collapse} onClick={handleChecklistDropdown}>
                         {openChecklist ? <FiChevronUp /> : <FiChevronDown />}
                     </span>
@@ -108,28 +145,35 @@ export default function TaskCard({ task, collapseAll }) {
                 {
                     openChecklist && (
                         <ul className={Styles.checklists_container}>
-                            {
-                                task?.checkLists.length > 0 &&
-                                task?.checkLists?.map((item, id) => (
-                                    <li key={id} className={Styles.checklist}>
+                            {task?.checkLists.length > 0 &&
+                                task?.checkLists.map((item, index) => (
+                                    <li key={index} className={Styles.checklist}>
                                         <div className={Styles.check_item}>
-                                            <input type="checkbox" id={id} disabled />
-                                            <label htmlFor={id}>{item}</label>
+                                            <Checkbox
+                                                labelId={index}
+                                                isChecked={item?.isDone}
+                                            />
+                                            <label htmlFor={`checklist-${index}`} className={Styles.item_label}>
+                                                {item?.tag || ""}
+                                            </label>
                                         </div>
                                     </li>
-                                ))
-
-                            }
+                                ))}
                         </ul>
+
                     )
                 }
             </section>
             <section className={Styles.task_variables}>
-                <span className={Styles.due_date}>
-                    {new Date(task?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(/(\d+)/, (match) => {
-                        const suffix = ['th', 'st', 'nd', 'rd'][(match % 10 > 3 || (match % 100 - match % 10 === 10)) ? 0 : match % 10];
-                        return match + suffix;
-                    })}
+                <span className={getDueDateClass()}
+                >
+                    {task?.dueDate
+                        ? new Date(task?.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(/(\d+)/, (match) => {
+                            const suffix = ['th', 'st', 'nd', 'rd'][(match % 10 > 3 || (match % 100 - match % 10 === 10)) ? 0 : match % 10];
+                            return match + suffix;
+                        })
+                        : null
+                    }
                 </span>
 
                 <aside className={Styles.categories}>
@@ -137,12 +181,15 @@ export default function TaskCard({ task, collapseAll }) {
                         allCategories.map((category, id) => {
                             if (category !== task?.category) {
                                 return (
-                                    <span key={id}>
-                                        {loadingCategory ? (
+                                    <span key={id} className={Styles.category_item}>
+                                        {loadingCategories[category] ? (
                                             <div className={Styles.loadingSpinner}></div>
                                         ) : (
-                                            <button className={Styles.category_button} onClick={() => handleCategoryUpdate(category)}>
-                                                {category}
+                                            <button
+                                                className={Styles.category_button}
+                                                onClick={() => handleCategoryUpdate(category)}
+                                            >
+                                                {category === 'InProgress' ? 'Progress': category === 'ToDo' ? 'To-Do': separateCamelCase(category) || "category"}
                                             </button>
                                         )}
                                     </span>
@@ -163,7 +210,7 @@ export default function TaskCard({ task, collapseAll }) {
             {
                 editTask &&
                 <Modal show={editTask} onClose={() => setEditTask(false)}>
-                    <EditTask task={task} setEditTask={setEditTask} />
+                    <EditTask taskId={task?._id} setEditTask={setEditTask} />
                 </Modal>
             }
 

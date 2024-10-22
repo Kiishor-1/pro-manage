@@ -10,12 +10,13 @@ const Dropdown = ({ title, options, onSelect }) => {
   const handleSelect = (option) => {
     setSelectedOption(option);
     onSelect(option);
-    setIsOpen(false); 
+    setIsOpen(false);
   };
 
-  console.log(options)
+  // console.log(options)
 
   return (
+
     <div className={styles.dropdown}>
       <button className={styles.dropdownButton} onClick={toggleDropdown}>
         {selectedOption}
@@ -27,9 +28,12 @@ const Dropdown = ({ title, options, onSelect }) => {
             <div
               key={index}
               className={styles.dropdownItem}
-              onClick={() => handleSelect(option)}
+              onClick={() => handleSelect(option.email)}
             >
-              {option}
+              <section className={styles.user}>
+                <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${option?.name || "User"}`} alt="" />
+                <span>{option?.email}</span>
+              </section>
             </div>
           ))}
         </div>

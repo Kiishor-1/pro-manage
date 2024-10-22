@@ -1,50 +1,46 @@
-import { useEffect, useState } from 'react';
-import TaskCategory from './TaskCategory';
-import Styles from './TaskContainer.module.css';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserTasks } from '../../../slices/taskSlice';
+import TaskCategory from './TaskCategory';
+import { useEffect } from 'react';
+import Styles from './TaskContainer.module.css';
 
 export default function TaskContainer() {
-  const dispatch = useDispatch();
-  const [tasks, setTasks] = useState({
-    Backlog: [],
-    ToDo: [],
-    InProgress: [],
-    Done: [],
-  });
+    const dispatch = useDispatch();
+    const { tasks } = useSelector((state) => state.tasks);
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const userTasks = await dispatch(fetchUserTasks()).unwrap();
-      categorizeTasks(userTasks);
-    };
-
-    fetchTasks();
-  }, [dispatch]);
-
-  const categorizeTasks = (userTasks) => {
     const categorizedTasks = {
-      Backlog: [],
-      ToDo: [],
-      InProgress: [],
-      Done: [],
+        Backlog: [],
+        ToDo: [],
+        InProgress: [],
+        Done: []
     };
 
-    userTasks.forEach((task) => {
-      if (task.category) {
-        categorizedTasks[task.category].push(task);
-      }
+    tasks?.forEach((task) => {
+        if (categorizedTasks.hasOwnProperty(task.category)) {
+            categorizedTasks[task.category].push(task);
+        }
     });
 
-    setTasks(categorizedTasks);
-  };
+    useEffect(() => {
+        dispatch(fetchUserTasks());
+    }, [dispatch]);
 
-  return (
-    <div className={Styles.task_container}>
-      <TaskCategory title="Backlog" tasks={tasks.Backlog} />
-      <TaskCategory title="ToDo" tasks={tasks.ToDo} />
-      <TaskCategory title="InProgress" tasks={tasks.InProgress} />
-      <TaskCategory title="Done" tasks={tasks.Done} />
-    </div>
-  );
+    const handleCategoryUpdate = () => {
+        dispatch(fetchUserTasks()); 
+    };
+
+    return (
+        <div className={Styles.task_container}>
+            {
+                Object.entries(categorizedTasks).map(([category, categoryTasks]) => (
+                    <TaskCategory
+                        key={category}
+                        title={category}
+                        tasks={categoryTasks}
+                        onCategoryUpdate={handleCategoryUpdate} 
+                    />
+                ))
+            }
+        </div>
+    );
 }

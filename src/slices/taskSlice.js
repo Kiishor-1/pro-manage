@@ -17,7 +17,6 @@ const {
 const { ADD_PEOPLE } = USER_ENDPOINTS;
 
 
-// Create Task thunk
 export const createTask = createAsyncThunk('tasks/createTask', async (taskData, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Creating Task...");
     const { token } = getState().auth;
@@ -44,7 +43,7 @@ export const createTask = createAsyncThunk('tasks/createTask', async (taskData, 
     }
 });
 
-// Get all tasks thunk
+
 export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Fetching Tasks...");
     const { token } = getState().auth;
@@ -74,7 +73,7 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
     }
 });
 
-// Get Task Details thunk
+
 export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (taskId, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Fetching Task Details...");
     const { token } = getState().auth;
@@ -103,7 +102,7 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
 });
 
 
-// Update Task thunk
+
 export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, updateData }, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Updating Task...");
     const { token } = getState().auth;
@@ -136,7 +135,6 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
 });
 
 
-// Delete Task thunk
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Deleting Task...");
     const { token } = getState().auth;
@@ -352,15 +350,15 @@ const taskSlice = createSlice({
             .addCase(updateTaskCategory.fulfilled, (state, action) => {
                 state.loading = false;
                 const updatedTask = action.payload;
-                const taskIndex = state.tasks.findIndex((task) => task._id === updatedTask._id);
-                if (taskIndex !== -1) {
-                    state.tasks[taskIndex] = updatedTask;
-                }
+                state.tasks = state.tasks.map((task) =>
+                    task._id === updatedTask._id ? updatedTask : task
+                );
             })
             .addCase(updateTaskCategory.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
+
         builder.addCase(fetchFilteredTasks.pending, (state) => {
             state.loading = true;
         })

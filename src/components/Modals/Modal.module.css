@@ -11,6 +11,10 @@
 }
 
 
+.modal_body::-webkit-scrollbar{
+    display: none;
+}
+
 .modal_body {
     background-color: white;
     max-height: 80vh;

@@ -26,6 +26,7 @@
     padding: 0.6rem;
     border: 1px solid gainsboro;
     border-radius: 0.6rem;
+    font-size: 1rem;
 }
 
 .priority {
@@ -61,7 +62,7 @@
     padding: 0.3rem;
 }
 
-.priority_item input[type="radio"]:checked + label {
+.priority_item input[type="radio"]:checked+label {
     border: 2px solid #317F8B;
     border-radius: 0.5rem;
     padding: 0.3rem;
@@ -71,19 +72,32 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
 }
 
 .checklists p {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     margin: 0;
 }
 
 .checklist_container {
-    padding: 0.2rem 1rem;
+    padding: 0.2rem;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.checklist_container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.checklist_container::-webkit-scrollbar-thumb {
+    background-color: #317F8B;
+    border-radius: 1rem;
 }
 
 ul.checklist_container li {
@@ -91,10 +105,16 @@ ul.checklist_container li {
     font-size: 0.9rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    border: 2px solid gainsboro;
+    border-radius: 0.5rem;
 }
 
-ul.checklist_container li span{
+
+ul.checklist_container li span {
     color: red;
     cursor: pointer;
 }
@@ -107,6 +127,27 @@ ul.checklist_container li span{
     gap: 0.5rem;
     background-color: white;
     border: none;
+}
+
+
+.checkIsDone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+input.checklist_input {
+    flex: 1;
+    width: 100%;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+}
+
+.add_checklist_btn {
+    font-size: 1rem;
+    outline: none;
+    background-color: white;
 }
 
 .task_variables {
@@ -172,6 +213,3 @@ button.submit {
     outline: none;
     z-index: 9999;
 }
-
-
-

@@ -4,14 +4,17 @@ import Styles from './ShowTask.module.css'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { getTaskDetails } from '../../slices/taskSlice';
+import Checkbox from '../common/Checkbox';
 export default function ShowTask() {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { task ,error } = useSelector((state)=>state.tasks);
-    useEffect(()=>{
+    const { task, error } = useSelector((state) => state.tasks);
+    useEffect(() => {
         dispatch(getTaskDetails(id));
-    },[id, dispatch])
-    if(error){
+    }, [id, dispatch])
+
+    console.log('task', task);
+    if (error) {
         return <p className={Styles.error_message}>{error || error?.response || error?.response?.data?.message || "Internal Server Error"}</p>
     }
     return (
@@ -29,7 +32,9 @@ export default function ShowTask() {
                 <p className={Styles.task_title}>{task?.title}</p>
                 <section className={Styles.checklists}>
                     <div className={Styles.checklist_dropdown}>
-                        <p className={Styles.metrics}>Checklist ({task?.checkLists.length}/{task?.checkLists.length})</p>
+                        <p className={Styles.metrics}>
+                            Checklist ({task?.checkLists.filter(item => item.isDone).length}/{task?.checkLists.length})
+                        </p>
 
                     </div>
                     <ul className={Styles.checklists_container}>
@@ -38,8 +43,11 @@ export default function ShowTask() {
                             task?.checkLists?.map((item, id) => (
                                 <li key={id} className={Styles.checklist}>
                                     <div className={Styles.check_item}>
-                                        <input type="checkbox" id={id} disabled />
-                                        <label htmlFor={id}>{item}</label>
+                                        <Checkbox
+                                            labelId={id}
+                                            isChecked={item?.isDone}
+                                        />
+                                        <label htmlFor={id}>{item?.tag || ""}</label>
                                     </div>
                                 </li>
                             ))
@@ -47,17 +55,17 @@ export default function ShowTask() {
                         }
                     </ul>
                 </section>
-               { 
-                task?.dueDate &&  
-                <section className={Styles.task_variables}>
-                    <span className={Styles.date_label}>Due Date</span>
-                    <span className={Styles.due_date}>
-                        {new Date(task?.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(/(\d+)/, (match) => {
-                            const suffix = ['th', 'st', 'nd', 'rd'][(match % 10 > 3 || (match % 100 - match % 10 === 10)) ? 0 : match % 10];
-                            return match + suffix;
-                        })}
-                    </span>
-                </section>}
+                {
+                    task?.dueDate &&
+                    <section className={Styles.task_variables}>
+                        <span className={Styles.date_label}>Due Date</span>
+                        <span className={Styles.due_date}>
+                            {new Date(task?.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(/(\d+)/, (match) => {
+                                const suffix = ['th', 'st', 'nd', 'rd'][(match % 10 > 3 || (match % 100 - match % 10 === 10)) ? 0 : match % 10];
+                                return match + suffix;
+                            })}
+                        </span>
+                    </section>}
             </div>
         </div >
     )

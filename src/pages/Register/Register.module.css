@@ -146,6 +146,7 @@
     background-color: white;
     text-align: center;
     text-decoration: none;
+    cursor: pointer;
 }
 
 button.auth_register {
@@ -155,6 +156,7 @@ button.auth_register {
     border: 2px solid #17A2B8;
     color: white;
     background-color: #17A2B8;
+    cursor: pointer;
 }
 
 .account_check {

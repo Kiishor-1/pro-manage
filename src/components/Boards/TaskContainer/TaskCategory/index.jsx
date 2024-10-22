@@ -5,15 +5,16 @@ import { HiMiniPlus } from "react-icons/hi2";
 import { useState, useEffect, useRef } from 'react';
 import Modal from '../../../Modals';
 import AddTask from '../../../Modals/AddTask';
+import separateCamelCase from '../../../../helpers/camelCase';
 
-export default function TaskCategory({ title, tasks }) {
+export default function TaskCategory({ title, tasks, onCategoryUpdate }) {
     const [addTask, setAddTask] = useState(false);
     const taskCategoryRef = useRef(null);
     const [hasScroll, setHasScroll] = useState(false);
     const [collapseAll, setCollapseAll] = useState(true);
 
     const handleCollapseAll = () => {
-        setCollapseAll((prev) => !prev);
+        setCollapseAll(true);
     };
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export default function TaskCategory({ title, tasks }) {
                 ref={taskCategoryRef}
             >
                 <div className={`${Styles.category_header} ${hasScroll ? Styles.balance_padding : ''}`}>
-                    <div className={Styles.category_name}>{title || "TaskTitle"}</div>
+                    <div className={Styles.category_name}>{separateCamelCase(title) || "category"}</div>
                     <div className={Styles.collapse_all}>
                         {title == 'ToDo' && <HiMiniPlus onClick={() => setAddTask(true)} />}
                         <VscCollapseAll onClick={handleCollapseAll} />
@@ -58,6 +59,7 @@ export default function TaskCategory({ title, tasks }) {
                                     key={task._id}
                                     task={task}
                                     collapseAll={collapseAll}
+                                    onCategoryUpdate={onCategoryUpdate}
                                 />
                             ))
                         ) : (
