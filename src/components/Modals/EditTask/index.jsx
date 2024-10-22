@@ -58,7 +58,7 @@ export default function EditTask({ setEditTask, taskId }) {
         const fetchAllUsers = async () => {
             try {
                 const response = await axios.get(GET_ALL_USERS);
-                setUsers(response.data.users); 
+                setUsers(response.data.users);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
@@ -96,7 +96,7 @@ export default function EditTask({ setEditTask, taskId }) {
 
     const handleTaskToggle = (index) => {
         const updatedTasks = [...formData.checkLists];
-        updatedTasks[index] = { ...updatedTasks[index], isDone: !updatedTasks[index].isDone }; 
+        updatedTasks[index] = { ...updatedTasks[index], isDone: !updatedTasks[index].isDone };
         setFormdata((prev) => ({
             ...prev,
             checkLists: updatedTasks,
@@ -206,15 +206,20 @@ export default function EditTask({ setEditTask, taskId }) {
                     {showDropdown && (
                         <div className={Styles.dropdown_menu} style={{ maxHeight: '150px', overflowY: 'auto' }}>
                             {
-                                allUsers.map((user, index) => (
-                                    <div key={index} className={Styles.dropdown_item}>
-                                        <div className={Styles.user_dp}>
-                                            <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${user?.name || "User"}`} alt="" />
-                                            <span>{user.email}</span>
+                                allUsers.length > 0 ? (
+                                    allUsers.map((user, index) => (
+                                        <div key={index} className={Styles.dropdown_item}>
+                                            <div className={Styles.user_dp}>
+                                                <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${user?.name || "User"}`} alt="" />
+                                                <span>{user.email}</span>
+                                            </div>
+                                            <button type="button" onClick={() => handleAssignUser(user.email)}>Assign</button>
                                         </div>
-                                        <button type="button" onClick={() => handleAssignUser(user.email)}>Assign</button>
-                                    </div>
-                                ))}
+                                    ))
+                                ) : (
+                                    <p className={Styles.no_user_case}>No User Found</p>
+                                )
+                            }
                         </div>
                     )}
                 </div>
@@ -236,7 +241,7 @@ export default function EditTask({ setEditTask, taskId }) {
                             <Checkbox
                                 labelId={index}
                                 isChecked={task?.isDone}
-                                onChange={()=>handleTaskToggle(index)}
+                                onChange={() => handleTaskToggle(index)}
                             />
                             <input
                                 type="text"

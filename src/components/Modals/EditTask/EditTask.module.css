@@ -69,31 +69,37 @@
 }
 
 
-.assignee{
+.assignee {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.user_dp{
+.user_dp {
     display: flex;
     align-items: center;
     gap: 0.2rem;
 }
 
-.user_dp img{
+.user_dp img {
     height: 2rem;
     width: 2rem;
     border-radius: 50%;
 }
 
-.assignee_heading{
+.no_user_case {
+    font-size: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.assignee_heading {
     font-size: 1rem;
     font-weight: 500;
 }
 
-.dropdown{
+.dropdown {
     padding: 0.5rem 0.5rem;
     border: 2px solid gainsboro;
     border-radius: 0.5rem;
@@ -101,11 +107,11 @@
     position: relative;
 }
 
-.dropdown_button{
+.dropdown_button {
     cursor: pointer;
 }
 
-.dropdown_menu{
+.dropdown_menu {
     position: absolute;
     background-color: white;
     top: 2.7rem;
@@ -117,16 +123,16 @@
     height: 15rem;
 }
 
-.dropdown_menu::-webkit-scrollbar{
+.dropdown_menu::-webkit-scrollbar {
     width: 8px;
 }
 
-.dropdown_menu::-webkit-scrollbar-thumb{
+.dropdown_menu::-webkit-scrollbar-thumb {
     background-color: #77a0baa5;
     border-radius: 1rem;
 }
 
-.dropdown_item{
+.dropdown_item {
     padding: 0.5rem;
     width: 100%;
     display: flex;
@@ -136,7 +142,7 @@
 }
 
 
-.dropdown_item button{
+.dropdown_item button {
     padding: 0.4rem 3.5rem;
     background-color: white;
     border-radius: 0.4rem;

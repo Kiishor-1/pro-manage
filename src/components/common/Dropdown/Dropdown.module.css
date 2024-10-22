@@ -63,6 +63,12 @@
     height: 24px;
     border-radius: 50%;
   }
+
+  .no_user_case{
+    font-size: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+  }
   
   .arrowDown {
     border: solid black;

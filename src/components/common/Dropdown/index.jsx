@@ -24,18 +24,24 @@ const Dropdown = ({ title, options, onSelect }) => {
       </button>
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          {options.map((option, index) => (
-            <div
-              key={index}
-              className={styles.dropdownItem}
-              onClick={() => handleSelect(option.email)}
-            >
-              <section className={styles.user}>
-                <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${option?.name || "User"}`} alt="" />
-                <span>{option?.email}</span>
-              </section>
-            </div>
-          ))}
+          {
+            options.length > 0 ? (
+              options.map((option, index) => (
+                <div
+                  key={index}
+                  className={styles.dropdownItem}
+                  onClick={() => handleSelect(option.email)}
+                >
+                  <section className={styles.user}>
+                    <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${option?.name || "User"}`} alt="" />
+                    <span>{option?.email}</span>
+                  </section>
+                </div>
+              ))
+            ):(
+              <p className={styles.no_user_case}>No User Found</p>
+            )
+          }
         </div>
       )}
     </div>
