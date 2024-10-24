@@ -56,8 +56,8 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
 
         if (!response.data.success) {
             toast.dismiss(toastId);
-            toast.error('Failed to fetch tasks');
-            return rejectWithValue('Failed to fetch tasks');
+            toast.error(response?.data?.error || 'Failed to fetch tasks');
+            return rejectWithValue(response?.data?.error || 'Failed to fetch tasks');
         }
 
         toast.dismiss(toastId);
@@ -84,8 +84,8 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
 
         if (!response.data.success) {
             toast.dismiss(toastId);
-            toast.error('Failed to fetch task details');
-            return rejectWithValue('Failed to fetch task details');
+            toast.error(response?.data?.error || 'Failed to fetch task details');
+            return rejectWithValue(response?.data?.error || 'Failed to fetch task details');
         }
 
         toast.dismiss(toastId);
@@ -116,8 +116,8 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
 
         if (!response.data.success) {
             toast.dismiss(toastId);
-            toast.error('Failed to update task');
-            return rejectWithValue('Failed to update task');
+            toast.error(response?.data?.error || 'Failed to update task');
+            return rejectWithValue(response?.data?.error || 'Failed to update task');
         }
 
         toast.dismiss(toastId);
@@ -144,8 +144,8 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { 
 
         if (!response.data.success) {
             toast.dismiss(toastId);
-            toast.error('Failed to delete task');
-            return rejectWithValue('Failed to delete task');
+            toast.error(response?.data?.error || 'Failed to delete task');
+            return rejectWithValue(response?.data?.error || 'Failed to delete task');
         }
 
         toast.dismiss(toastId);
