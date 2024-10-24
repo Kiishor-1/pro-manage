@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { USER_ENDPOINTS } from '../../../services/api';
 import axios from 'axios';
 import { addPeople } from '../../../slices/taskSlice';
+import toast from 'react-hot-toast';
 
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
@@ -20,7 +21,7 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
         const fetchAllusers = async () => {
             try {
                 const response = await axios.get(GET_ALL_USERS);
-                console.log(response.data.users);
+                // console.log(response.data.users);
                 setUsers(response.data.users);
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -30,7 +31,7 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
     }, []);
 
     const allUsers = users.filter((currUser) => currUser._id !== user._id);
-    console.log(allUsers);
+    // console.log(allUsers);
 
     const handleSelectUser = (user) => {
         setSelectedUser(user);
@@ -47,6 +48,8 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
             }).catch(err => {
                 console.log(err);
             })
+        }else{
+            toast.error('Enter valid user data')
         }
     };
 
@@ -56,6 +59,7 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                 <section className={Styles.success_view}>
                     <p className={Styles.user_added}>{selectedUser || 'User'} added to board</p>
                     <button
+                        type='button'
                         onClick={() => setAddPeopleModal(false)}
                         className={Styles.submit}
                     >
@@ -69,9 +73,11 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                     </label>
                     <Dropdown
                         title="Select a user"
+                        btnText="Add"
                         options={allUsers.map((user) => { return { email: user.email, name: user?.name } }
                         )}
                         onSelect={handleSelectUser}
+                        heightStyle={{height:"100px"}}
                     />
                     <div className={Styles.form_buttons}>
                         <button

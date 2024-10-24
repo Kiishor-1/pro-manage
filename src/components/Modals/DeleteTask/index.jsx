@@ -9,7 +9,6 @@ export default function DeleteTask({ setDeleteTask, task }) {
     // const navigate = useNavigate();
     const handleDelete = () => {
         dispatch(deleteTask(task._id)).then(res=>{
-            console.log(res);
             if(res.type === 'tasks/deleteTask/fulfilled'){
                 // navigate('/');
                 setDeleteTask(false);

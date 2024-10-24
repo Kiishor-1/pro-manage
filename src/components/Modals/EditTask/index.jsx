@@ -10,6 +10,8 @@ import axios from 'axios';
 import { USER_ENDPOINTS } from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
 import Checkbox from '../../common/Checkbox';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../../common/Dropdown';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
@@ -17,23 +19,14 @@ export default function EditTask({ setEditTask, taskId }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const initialData = {
-        title: "",
-        priority: "",
-        checkLists: [],
-        date: null,
-        assignee: "",
-    };
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm(); 
 
-    const [formData, setFormdata] = useState(initialData);
+    const [checkLists, setCheckLists] = useState([]); 
     const [users, setUsers] = useState([]);
     const { user } = useSelector((state) => state.auth);
     const { task } = useSelector((state) => state.tasks);
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null); 
 
-    const handleDropdownToggle = () => {
-        setShowDropdown(!showDropdown);
-    };
 
     useEffect(() => {
         if (taskId) {
@@ -41,18 +34,16 @@ export default function EditTask({ setEditTask, taskId }) {
         }
     }, [taskId, dispatch]);
 
+
     useEffect(() => {
         if (task && taskId) {
-            setFormdata({
-                title: task?.title || "",
-                priority: task?.priority || "",
-                checkLists: task?.checkLists || [],
-                date: task?.createdAt ? new Date(task.createdAt) : null,
-                assignee: task?.assignee?.email || "",
-            });
+            setValue('title', task?.title || "");
+            setValue('priority', task?.priority || "");
+            setSelectedDate(task?.createdAt ? new Date(task.createdAt) : null);
+            setValue('assignee', task?.assignee?.email || "");
+            setCheckLists(task?.checkLists || []); 
         }
-    }, [task, taskId]);
-
+    }, [task, taskId, setValue]);
 
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -68,70 +59,47 @@ export default function EditTask({ setEditTask, taskId }) {
 
     const allUsers = users.filter((currUser) => currUser._id !== user._id);
 
-    const handleChange = (e) => {
-        const { value, name } = e.target;
-        setFormdata((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
 
     const handleTaskAddition = () => {
         const newChecklistItem = { tag: "", isDone: false };
-        const updatedChecklists = [...formData.checkLists, newChecklistItem];
-        setFormdata((prev) => ({
-            ...prev,
-            checkLists: updatedChecklists,
-        }));
+        setCheckLists((prev) => [...prev, newChecklistItem]);
     };
 
     const handleChecklistNameChange = (index, newTag) => {
-        const updatedChecklists = [...formData.checkLists];
+        const updatedChecklists = [...checkLists];
         updatedChecklists[index] = { ...updatedChecklists[index], tag: newTag };
-        setFormdata((prev) => ({
-            ...prev,
-            checkLists: updatedChecklists,
-        }));
+        setCheckLists(updatedChecklists);
     };
 
     const handleTaskToggle = (index) => {
-        const updatedTasks = [...formData.checkLists];
+        const updatedTasks = [...checkLists];
         updatedTasks[index] = { ...updatedTasks[index], isDone: !updatedTasks[index].isDone };
-        setFormdata((prev) => ({
-            ...prev,
-            checkLists: updatedTasks,
-        }));
+        setCheckLists(updatedTasks);
     };
 
     const handleTaskDeletion = (index) => {
-        const updatedTasks = formData.checkLists.filter((_, i) => i !== index);
-        setFormdata((prev) => ({
-            ...prev,
-            checkLists: updatedTasks,
-        }));
+        const updatedTasks = checkLists.filter((_, i) => i !== index);
+        setCheckLists(updatedTasks);
     };
 
     const handleDateChange = (selectedDate) => {
-        setFormdata((prev) => ({
-            ...prev,
-            date: selectedDate,
-        }));
+        setSelectedDate(selectedDate);
     };
 
     const handleAssignUser = (email) => {
-        setFormdata((prev) => ({
-            ...prev,
-            assignee: email,
-        }));
-        setShowDropdown(false);
+        setValue('assignee', email);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!formData.title || !formData.priority) {
-            console.error("Title and Priority are required fields.");
-            return;
-        }
+
+    const onSubmit = async (data) => {
+        console.log(data);
+        const formData = {
+            ...data,
+            date: selectedDate,
+            checkLists, 
+        };
+
+        // console.log(formData)
 
         try {
             const res = await dispatch(updateTask({ taskId: task._id, updateData: formData }));
@@ -144,8 +112,7 @@ export default function EditTask({ setEditTask, taskId }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={Styles.edit_task}>
-            {/* Title Section */}
+        <form onSubmit={handleSubmit(onSubmit)} className={Styles.edit_task}>
             <section className={Styles.title}>
                 <label className={Styles.title_label}>Title</label>
                 <input
@@ -153,12 +120,12 @@ export default function EditTask({ setEditTask, taskId }) {
                     type="text"
                     name='title'
                     placeholder='Enter Task Title'
-                    value={formData.title}
-                    onChange={handleChange}
+                    {...register("title", { required: true })} 
                 />
+                {errors.title && <p className={Styles.error}>Title is required</p>}
             </section>
 
-
+ 
             <section className={Styles.priority}>
                 <span className={Styles.priority_heading}>Select Priority</span>
                 <div className={Styles.priority_item}>
@@ -167,8 +134,7 @@ export default function EditTask({ setEditTask, taskId }) {
                         name="priority"
                         id="high"
                         value="HIGH-PRIORITY"
-                        checked={formData.priority === "HIGH-PRIORITY"}
-                        onChange={handleChange}
+                        {...register("priority", { required: true })} 
                     />
                     <label htmlFor="high">HIGH PRIORITY</label>
                 </div>
@@ -178,8 +144,7 @@ export default function EditTask({ setEditTask, taskId }) {
                         name="priority"
                         id="moderate"
                         value="MODERATE-PRIORITY"
-                        checked={formData.priority === "MODERATE-PRIORITY"}
-                        onChange={handleChange}
+                        {...register("priority", { required: true })}
                     />
                     <label htmlFor="moderate">MODERATE PRIORITY</label>
                 </div>
@@ -189,55 +154,30 @@ export default function EditTask({ setEditTask, taskId }) {
                         name="priority"
                         id="low"
                         value="LOW-PRIORITY"
-                        checked={formData.priority === "LOW-PRIORITY"}
-                        onChange={handleChange}
+                        {...register("priority", { required: true })}
                     />
                     <label htmlFor="low">LOW PRIORITY</label>
                 </div>
+                {errors.priority && <p className={Styles.error}>Priority is required</p>}
             </section>
 
 
-            <section className={Styles.assignee}>
-                <span className={Styles.assignee_heading}>Assign to</span>
-                <div className={Styles.dropdown}>
-                    <aside type="button" onClick={handleDropdownToggle} className={Styles.dropdown_button}>
-                        {formData?.assignee || "Select Assignee"}
-                    </aside>
-                    {showDropdown && (
-                        <div className={Styles.dropdown_menu} style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                            {
-                                allUsers.length > 0 ? (
-                                    allUsers.map((user, index) => (
-                                        <div key={index} className={Styles.dropdown_item}>
-                                            <div className={Styles.user_dp}>
-                                                <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${user?.name || "User"}`} alt="" />
-                                                <span>{user.email}</span>
-                                            </div>
-                                            <button type="button" onClick={() => handleAssignUser(user.email)}>Assign</button>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className={Styles.no_user_case}>No User Found</p>
-                                )
-                            }
-                        </div>
-                    )}
-                </div>
-            </section>
+            <Dropdown
+                title={task?.assignee?.email || "Select a user"}
+                options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}
+                onSelect={(email) => handleAssignUser(email)}
+                heightStyle={{height:"fit-content"}}
+            />
+
 
             <section className={Styles.checklists}>
                 <p>
-                    Checklist ({formData.checkLists.filter(item => item.isDone).length}/{formData.checkLists.length})
+                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})
                 </p>
 
                 <ul className={Styles.checklist_container}>
-                    {formData.checkLists.map((task, index) => (
+                    {checkLists.map((task, index) => (
                         <li key={index} className={Styles.checklist_item}>
-                            {/* <input
-                                type="checkbox"
-                                checked={task.isDone}
-                                onChange={() => handleTaskToggle(index)} // Toggle isDone immutably
-                            /> */}
                             <Checkbox
                                 labelId={index}
                                 isChecked={task?.isDone}
@@ -248,7 +188,7 @@ export default function EditTask({ setEditTask, taskId }) {
                                 className={Styles.checklist_input}
                                 placeholder="Add a task"
                                 value={task.tag}
-                                onChange={(e) => handleChecklistNameChange(index, e.target.value)} // Change tag immutably
+                                onChange={(e) => handleChecklistNameChange(index, e.target.value)}
                             />
                             <span>
                                 <FaTrash
@@ -260,7 +200,6 @@ export default function EditTask({ setEditTask, taskId }) {
                     ))}
                 </ul>
 
-
                 <button className={Styles.add_checklist_btn} type="button" onClick={handleTaskAddition}>
                     + Add New
                 </button>
@@ -269,7 +208,7 @@ export default function EditTask({ setEditTask, taskId }) {
             <section className={Styles.task_variables}>
                 <div className={Styles.due_date}>
                     <DatePicker
-                        selected={formData.date}
+                        selected={selectedDate}
                         onChange={handleDateChange}
                         placeholderText="Select Due Date"
                         dateFormat="yyyy/MM/dd"
@@ -279,6 +218,7 @@ export default function EditTask({ setEditTask, taskId }) {
                     />
                 </div>
 
+
                 <div className={Styles.form_buttons}>
                     <button className={Styles.cancel} onClick={() => setEditTask(false)} type="button">Cancel</button>
                     <button className={Styles.submit} type="submit">Save</button>
@@ -287,4 +227,5 @@ export default function EditTask({ setEditTask, taskId }) {
         </form>
     );
 }
+
 

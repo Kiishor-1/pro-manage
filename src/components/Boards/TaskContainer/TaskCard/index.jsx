@@ -43,6 +43,8 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             });
     };
 
+    // console.log('task',task)
+
 
     const handleShareClick = () => {
         const shareableLink = `${window.location.origin}/tasks/${task._id}`;

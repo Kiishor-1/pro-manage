@@ -58,7 +58,7 @@ export default function Register() {
       return;
     }
 
-    console.log("formData is: ", formData);
+
 
     dispatch(registerUser(formData))
       .then((result) => {

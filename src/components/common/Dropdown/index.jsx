@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styles from './Dropdown.module.css';
 
-const Dropdown = ({ title, options, onSelect }) => {
+const Dropdown = ({ title, options, onSelect, btnText, heightStyle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(title);
 
@@ -13,12 +13,16 @@ const Dropdown = ({ title, options, onSelect }) => {
     setIsOpen(false);
   };
 
-  // console.log(options)
+  useEffect(() => {
+    if (title) {
+      setSelectedOption(title);
+    }
+  }, [title])
 
   return (
 
-    <div className={styles.dropdown}>
-      <button className={styles.dropdownButton} onClick={toggleDropdown}>
+    <div className={styles.dropdown} style={heightStyle}>
+      <button type='button' className={styles.dropdownButton} onClick={toggleDropdown}>
         {selectedOption}
         <span className={isOpen ? styles.arrowUp : styles.arrowDown}></span>
       </button>
@@ -30,15 +34,17 @@ const Dropdown = ({ title, options, onSelect }) => {
                 <div
                   key={index}
                   className={styles.dropdownItem}
-                  onClick={() => handleSelect(option.email)}
                 >
                   <section className={styles.user}>
+                    <div className={styles.user_dp}>
                     <img src={`https://ui-avatars.com/api/?background=FFEBEB&color=000000&name=${option?.name || "User"}`} alt="" />
                     <span>{option?.email}</span>
+                    </div>
+                    <button onClick={() => handleSelect(option.email)} className={styles.assign_user_button} type='button'>{btnText ? btnText :"Assign"}</button>
                   </section>
                 </div>
               ))
-            ):(
+            ) : (
               <p className={styles.no_user_case}>No User Found</p>
             )
           }

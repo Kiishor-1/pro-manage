@@ -13,9 +13,8 @@ export default function ShowTask() {
         dispatch(getTaskDetails(id));
     }, [id, dispatch])
 
-    console.log('task', task);
     if (error) {
-        return <p className={Styles.error_message}>{error || error?.response || error?.response?.data?.message || "Internal Server Error"}</p>
+        return <p className={Styles.error_message}>{error || error?.response || error?.response?.data?.error || "Internal Server Error"}</p>
     }
     return (
         <div className={Styles.show_page}>

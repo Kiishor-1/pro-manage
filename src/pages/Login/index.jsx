@@ -52,7 +52,7 @@ export default function Login() {
       toast.error('Provide all the required data');
       return;
     }
-    console.log("formData is: ", formData);
+
 
     dispatch(login(formData))
       .then((result) => {

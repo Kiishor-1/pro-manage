@@ -14,8 +14,8 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (credent
 
         if (!response?.data?.success) {
             toast.dismiss(toastId);
-            toast.error(response?.data?.message || 'Failed to register user');
-            return rejectWithValue(response?.data?.message || 'Failed to register user');
+            toast.error(response?.data?.error || 'Failed to register user');
+            return rejectWithValue(response?.data?.error || 'Failed to register user');
         }
 
         toast.dismiss(toastId);
@@ -23,8 +23,8 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (credent
         return response.data;
     } catch (error) {
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message || 'Error during registration');
-        return rejectWithValue(error?.response?.data?.message || 'Error during registration');
+        toast.error(error?.response?.data?.error || 'Error during registration');
+        return rejectWithValue(error?.response?.data?.error || 'Error during registration');
     }
 });
 
@@ -35,16 +35,16 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 
         if (!response?.data?.success) {
             toast.dismiss(toastId)
-            toast.error(response?.data?.message || 'Failed to login');
-            return rejectWithValue(response?.data?.message || 'Failed to login');
+            toast.error(response?.data?.error || 'Failed to login');
+            return rejectWithValue(response?.data?.error || 'Failed to login');
         }
         toast.dismiss(toastId)
         toast.success('Login Success');
         return response.data;
     } catch (error) {
         toast.dismiss(toastId)
-        toast.error(error?.response?.data?.message || 'Error during login');
-        return rejectWithValue(error?.response?.data?.message || 'Error during login');
+        toast.error(error?.response?.data?.error || 'Error during login');
+        return rejectWithValue(error?.response?.data?.error || 'Error during login');
     }
 });
 
@@ -100,8 +100,8 @@ export const updateUser = createAsyncThunk(
             return response?.data?.user;
         } catch (error) {
             toast.dismiss(toastId);
-            toast.error(error.response?.data?.message || 'Failed to update user');
-            return rejectWithValue(error.response?.data?.message || 'Failed to update user');
+            toast.error(error.response?.data?.error || 'Failed to update user');
+            return rejectWithValue(error.response?.data?.error || 'Failed to update user');
         }
     }
 );

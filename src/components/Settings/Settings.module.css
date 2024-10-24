@@ -88,3 +88,12 @@ button.update {
     background-color: #17A2B8;
     cursor: pointer;
 }
+
+.inputs div input.input_error{
+    font-size: 1rem;
+}
+
+.inputs span.error_message{
+    font-size: 1rem;
+    color: red;
+}

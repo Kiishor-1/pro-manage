@@ -20,7 +20,6 @@ const { ADD_PEOPLE } = USER_ENDPOINTS;
 export const createTask = createAsyncThunk('tasks/createTask', async (taskData, { rejectWithValue, getState }) => {
     const toastId = toast.loading("Creating Task...");
     const { token } = getState().auth;
-    console.log('taskdata', taskData)
     try {
         const response = await axios.post(CREATE_TASK, taskData, {
             headers: {
@@ -30,16 +29,16 @@ export const createTask = createAsyncThunk('tasks/createTask', async (taskData, 
 
         if (!response.data.success) {
             toast.dismiss(toastId);
-            toast.error(response?.data?.message || 'Failed to create task');
-            return rejectWithValue(response.data.message || 'Task creation failed');
+            toast.error(response?.data?.error || 'Failed to create task');
+            return rejectWithValue(response.data.error || 'Task creation failed');
         }
         toast.dismiss(toastId);
         toast.success('Task created successfully!');
         return response.data.task;
     } catch (error) {
         toast.dismiss(toastId);
-        toast.error(error.response?.data?.message || 'Error creating task');
-        return rejectWithValue(error.response?.data?.message || 'Task creation error');
+        toast.error(error.response?.data?.error || 'Error creating task');
+        return rejectWithValue(error.response?.data?.error || 'Task creation error');
     }
 });
 
@@ -54,7 +53,6 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
             },
         });
 
-        console.log(response.data.tasks)
 
         if (!response.data.success) {
             toast.dismiss(toastId);
@@ -68,8 +66,8 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
     } catch (error) {
         console.log(error);
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message || 'Error fetching tasks');
-        return rejectWithValue(error?.response?.data?.message || 'Error fetching tasks');
+        toast.error(error?.response?.data?.error || 'Error fetching tasks');
+        return rejectWithValue(error?.response?.data?.error || 'Error fetching tasks');
     }
 });
 
@@ -96,8 +94,8 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
     } catch (error) {
         console.log(error)
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message || 'Error fetching task details');
-        return rejectWithValue(error?.response?.data?.message || 'Error fetching task details');
+        toast.error(error?.response?.data?.error || 'Error fetching task details');
+        return rejectWithValue(error?.response?.data?.error || 'Error fetching task details');
     }
 });
 
@@ -107,8 +105,6 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
     const toastId = toast.loading("Updating Task...");
     const { token } = getState().auth;
 
-    console.log("id", taskId);
-    console.log("Update Data:", updateData);
 
     try {
         const response = await axios.put(UPDATE_TASK(taskId), updateData, {
@@ -129,8 +125,8 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ taskId, 
         return response.data.task;
     } catch (error) {
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message || 'Error updating task');
-        return rejectWithValue(error?.response?.data?.message || 'Error updating task');
+        toast.error(error?.response?.data?.error || 'Error updating task');
+        return rejectWithValue(error?.response?.data?.error || 'Error updating task');
     }
 });
 
@@ -145,7 +141,6 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { 
             },
         });
 
-        console.log('Delete response', response.data);
 
         if (!response.data.success) {
             toast.dismiss(toastId);
@@ -159,8 +154,8 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (taskId, { 
     } catch (error) {
         console.log(error);
         toast.dismiss(toastId);
-        toast.error(error?.response?.data?.message || 'Error deleting task');
-        return rejectWithValue(error?.response?.data?.message || 'Error deleting task');
+        toast.error(error?.response?.data?.error || 'Error deleting task');
+        return rejectWithValue(error?.response?.data?.error || 'Error deleting task');
     }
 });
 
@@ -180,8 +175,8 @@ export const addPeople = createAsyncThunk(
             return response.data;
         } catch (error) {
             toast.dismiss(toastId)
-            toast.error(error.response?.data?.message)
-            return rejectWithValue(error.response?.data?.message || 'Failed to add people to tasks');
+            toast.error(error.response?.data?.error)
+            return rejectWithValue(error.response?.data?.error || 'Failed to add people to tasks');
         }
     }
 );
@@ -198,7 +193,7 @@ export const updateTaskCategory = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to update task category');
+            return rejectWithValue(error.response?.data?.error || 'Failed to update task category');
         }
     }
 );
@@ -215,10 +210,9 @@ export const fetchFilteredTasks = createAsyncThunk(
                 },
 
             });
-            console.log('response', response.data);
             return response.data.tasks;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to fetch tasks');
+            return rejectWithValue(error.response?.data?.error || 'Failed to fetch tasks');
         }
     }
 );

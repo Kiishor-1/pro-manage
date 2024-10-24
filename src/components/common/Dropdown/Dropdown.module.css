@@ -1,7 +1,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    height: 100px;
+    /* height: 100px; */
     width: 100%;
   }
 
@@ -51,18 +51,33 @@
   .user{
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.3rem;
   }
 
-  .user span{
+  .user_dp{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .user_dp span{
     font-size: 1rem;
   }
 
-  .user img{
+  .user_dp img{
     width: 24px;
     height: 24px;
     border-radius: 50%;
   }
+
+  button.assign_user_button{
+    padding: 0.4rem 2rem;
+    border: 2px solid gainsboro;
+    background-color: white;
+    border-radius: 0.5rem;
+  }
+
 
   .no_user_case{
     font-size: 1rem;
