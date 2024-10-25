@@ -1,5 +1,5 @@
-import { TbSquareRoundedCheckFilled } from 'react-icons/tb';
 import Styles from './Checkbox.module.css';
+import CheckMark from '../../../assets/images/check.svg'
 
 export default function Checkbox({ isChecked, labelId, onChange }) {
     return (
@@ -13,7 +13,7 @@ export default function Checkbox({ isChecked, labelId, onChange }) {
                 readOnly={!onChange}
             />
             <label htmlFor={labelId} className={Styles.checkbox_label}>
-                <TbSquareRoundedCheckFilled />
+                <img src={CheckMark} alt="check mark" />
             </label>
         </div>
     );

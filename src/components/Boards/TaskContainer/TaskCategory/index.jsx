@@ -1,7 +1,7 @@
 import TaskCard from '../TaskCard';
 import Styles from './TaskCategory.module.css';
-import { VscCollapseAll } from "react-icons/vsc";
-import { HiMiniPlus } from "react-icons/hi2";
+import Collapse from '../../../..//assets/images/collapseAll.svg'
+import Plus from '../../../../assets/images/plus.svg'
 import { useState, useEffect, useRef } from 'react';
 import Modal from '../../../Modals';
 import AddTask from '../../../Modals/AddTask';
@@ -47,8 +47,8 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate, loading }
                 <div className={`${Styles.category_header} ${hasScroll ? Styles.balance_padding : ''}`}>
                     <div className={Styles.category_name}>{separateCamelCase(title) || "category"}</div>
                     <div className={Styles.collapse_all}>
-                        {title == 'ToDo' && <HiMiniPlus onClick={() => setAddTask(true)} />}
-                        <VscCollapseAll onClick={handleCollapseAll} />
+                        {title == 'ToDo' && (<img src={Plus} alt='plus' onClick={() => setAddTask(true)} />)}
+                        <img onClick={handleCollapseAll} src={Collapse} alt="collapse" />
                     </div>
                 </div>
                 <div className={`${Styles.all_tasks} ${hasScroll ? Styles.balance_padding : ''}`}>

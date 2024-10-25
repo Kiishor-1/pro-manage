@@ -79,8 +79,7 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
             toast.error(response?.data?.error || 'Failed to fetch task details');
             return rejectWithValue(response?.data?.error || 'Failed to fetch task details');
         }
-
-        return response.data.task;
+        return response.data?.task;
     } catch (error) {
         console.log(error)
         toast.error(error?.response?.data?.error || 'Error fetching task details');
@@ -182,6 +181,7 @@ export const updateTaskCategory = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
+            toast.error(error.response?.data?.error || 'Failed to update task category');
             return rejectWithValue(error.response?.data?.error || 'Failed to update task category');
         }
     }
@@ -220,6 +220,7 @@ export const fetchAnalytics = createAsyncThunk(
             });
             return response.data.analytics;
         } catch (error) {
+            toast.error(error.response?.data?.error || 'Failed to fetch analytics')
             return rejectWithValue(error.response.data);
         }
     }

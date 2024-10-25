@@ -2,6 +2,8 @@ import Styles from './Modal.module.css'
 const Modal = ({ show, onClose, children }) => {
     if (!show) return null;
 
+    console.log('show',show)
+
     return (
         <div className={Styles.modal}>
             <div className={Styles.modal_body}>

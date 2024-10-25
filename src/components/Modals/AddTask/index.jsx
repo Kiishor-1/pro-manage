@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../slices/taskSlice';
-import { FaTrash } from 'react-icons/fa6';
+import Trash from '../../../assets/images/Delete.svg'
 import Checkbox from '../../common/Checkbox';
 import Dropdown from '../../common/Dropdown';
 import axios from 'axios';
@@ -177,10 +177,7 @@ export default function AddTask({ setAddTask }) {
                                 onChange={(e) => handleChecklistNameChange(index, e.target.value)}
                             />
                             <span>
-                                <FaTrash
-                                    className={Styles.delete_icon}
-                                    onClick={() => handleTaskDeletion(index)}
-                                />
+                                <img src={Trash} alt="delete" onClick={()=>handleTaskDeletion(index)} />
                             </span>
                         </li>
                     ))}

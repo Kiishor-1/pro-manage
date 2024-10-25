@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Styles from './TaskCard.module.css';
-import { BsThreeDots } from "react-icons/bs";
+import ThreeDots from '../../../../assets/images/ThreeDots.svg'
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateTaskCategory } from '../../../../slices/taskSlice';
@@ -8,7 +8,6 @@ import DeleteTask from '../../../Modals/DeleteTask';
 import Modal from '../../../Modals';
 import EditTask from '../../../Modals/EditTask';
 import toast from 'react-hot-toast';
-import { TbSquareRoundedCheckFilled, TbSquareRoundedFilled } from 'react-icons/tb';
 import Checkbox from '../../../common/Checkbox';
 import separateCamelCase from '../../../../helpers/camelCase';
 
@@ -43,9 +42,6 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             });
     };
 
-    console.log('task', task)
-
-
     const handleShareClick = () => {
         const shareableLink = `${window.location.origin}/tasks/${task._id}`;
         navigator.clipboard.writeText(shareableLink)
@@ -55,7 +51,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                     position: 'top-right',
                     style: {
                         border: '1px solid #48C1B5',
-                        padding: '13px 16px',
+                        padding: '16px 40px',
                         color: 'black',
                         background: '#F6FFF9',
                         fontFamily: 'Poppins',
@@ -105,12 +101,16 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
         return Styles.due_date;
     };
 
+    useEffect(() => {
+        console.log("editTask:", editTask);  
+    }, [editTask]);
+
 
     return (
         <div className={Styles.task}>
             <section className={Styles.task_header}>
                 <aside className={Styles.priority_section}>
-                    <span className={Styles.priority_indicator} style={{ backgroundColor: task?.priority === "HIGH-PRIORITY" ? '#eb109e' : task.priority === "MODERATE-PRIORITY" ? '#17A2B8' : '#30bf41' }}></span>
+                    <span className={Styles.priority_indicator} style={{ backgroundColor: task?.priority === "HIGH-PRIORITY" ? '#FF2473' : task.priority === "MODERATE-PRIORITY" ? '#18B0FF' : '#63C05B' }}></span>
                     <span className={Styles.priority}>{task?.priority.replace(/-/g, ' ').toUpperCase()}</span>
                     {
                         task?.assignee &&
@@ -123,7 +123,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                 </aside>
                 <aside className={Styles.options}>
                     <div className={Styles.option_button} onClick={handleOptionsToggle}>
-                        <BsThreeDots />
+                        <img src={ThreeDots} alt="menu" />
                     </div>
                     {showOptions && (
                         <div className={Styles.option_container}>
@@ -131,12 +131,10 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                                 setEditTask(true);
                                 setShowOptions(false);
                             }} className={Styles.option}>Edit</span>
-
                             <span onClick={() => {
                                 handleShareClick();
                                 setShowOptions(false);
                             }} className={`${Styles.option} ${Styles.share}`}>Share</span>
-
                             <span onClick={() => {
                                 setDeleteTask(true);
                                 setShowOptions(false);
@@ -223,8 +221,8 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
 
             {
                 editTask &&
-                <Modal show={editTask} onClose={() => setEditTask(false)}>
-                    <EditTask taskId={task?._id} setEditTask={setEditTask} />
+                <Modal show={true}>
+                    <EditTask task={task} setEditTask={setEditTask} />
                 </Modal>
             }
 

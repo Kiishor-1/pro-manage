@@ -1,11 +1,11 @@
 import Styles from './FilterPage.module.css';
-import { LuUsers2 } from "react-icons/lu";
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilteredTasks } from '../../../slices/taskSlice';
 import { FaChevronDown } from "react-icons/fa";
 import Modal from '../../Modals';
 import AddPeopleModal from '../../Modals/AddPeople';
+import AddPeopleIcon from '../../../assets/images/add.svg'
 
 export default function FilterPage() {
     const [addPeopleModal, setAddPeopleModal] = useState(false);
@@ -19,7 +19,6 @@ export default function FilterPage() {
         localStorage.setItem('taskFilter', filter);
     }, [filter, dispatch]);
 
-    console.log('filter',filter);
 
     const handleFilterChange = (value) => {
         setFilter(value);
@@ -34,7 +33,7 @@ export default function FilterPage() {
                     className={Styles.add_people_section}
                     onClick={() => setAddPeopleModal(true)}
                 >
-                    <LuUsers2 className={Styles.add_people} />
+                    <img src={AddPeopleIcon} alt="add people" />
                     <span className={Styles.add_people_btn}>Add People</span>
                 </section>
             </div>

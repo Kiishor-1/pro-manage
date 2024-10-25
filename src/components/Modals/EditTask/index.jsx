@@ -1,49 +1,36 @@
 import { useEffect, useState } from 'react';
 import Styles from './EditTask.module.css';
-import { HiMiniPlus } from "react-icons/hi2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { getTaskDetails, updateTask } from '../../../slices/taskSlice';
-import { FaTrash } from 'react-icons/fa6';
+import Trash from '../../../assets/images/Delete.svg'
 import axios from 'axios';
 import { USER_ENDPOINTS } from '../../../services/api';
-import { useNavigate } from 'react-router-dom';
-import Checkbox from '../../common/Checkbox';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../../common/Dropdown';
+import Checkbox from '../../common/Checkbox';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
-export default function EditTask({ setEditTask, taskId }) {
+export default function EditTask({ setEditTask, task }) {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm(); 
-
-    const [checkLists, setCheckLists] = useState([]); 
+    const [checkLists, setCheckLists] = useState([]);
     const [users, setUsers] = useState([]);
     const { user } = useSelector((state) => state.auth);
-    const { task } = useSelector((state) => state.tasks);
-    const [selectedDate, setSelectedDate] = useState(null); 
+    const [selectedDate, setSelectedDate] = useState(null);
 
 
     useEffect(() => {
-        if (taskId) {
-            dispatch(getTaskDetails(taskId));
-        }
-    }, [taskId, dispatch]);
-
-
-    useEffect(() => {
-        if (task && taskId) {
+        if (task) {
             setValue('title', task?.title || "");
             setValue('priority', task?.priority || "");
             setSelectedDate(task?.createdAt ? new Date(task.createdAt) : null);
             setValue('assignee', task?.assignee?.email || "");
-            setCheckLists(task?.checkLists || []); 
+            setCheckLists(task?.checkLists || []);
         }
-    }, [task, taskId, setValue]);
+    }, [task, setValue]);
 
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -58,7 +45,6 @@ export default function EditTask({ setEditTask, taskId }) {
     }, []);
 
     const allUsers = users.filter((currUser) => currUser._id !== user._id);
-
 
     const handleTaskAddition = () => {
         const newChecklistItem = { tag: "", isDone: false };
@@ -90,13 +76,11 @@ export default function EditTask({ setEditTask, taskId }) {
         setValue('assignee', email);
     };
 
-
     const onSubmit = async (data) => {
-        console.log(data);
         const formData = {
             ...data,
             date: selectedDate,
-            checkLists, 
+            checkLists,
         };
 
         // console.log(formData)
@@ -111,6 +95,7 @@ export default function EditTask({ setEditTask, taskId }) {
         }
     };
 
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={Styles.edit_task}>
             <section className={Styles.title}>
@@ -120,12 +105,11 @@ export default function EditTask({ setEditTask, taskId }) {
                     type="text"
                     name='title'
                     placeholder='Enter Task Title'
-                    {...register("title", { required: true })} 
+                    {...register("title", { required: true })}
                 />
                 {errors.title && <p className={Styles.error}>Title is required</p>}
             </section>
 
- 
             <section className={Styles.priority}>
                 <span className={Styles.priority_heading}>Select Priority</span>
                 <div className={Styles.priority_item}>
@@ -134,7 +118,7 @@ export default function EditTask({ setEditTask, taskId }) {
                         name="priority"
                         id="high"
                         value="HIGH-PRIORITY"
-                        {...register("priority", { required: true })} 
+                        {...register("priority", { required: true })}
                     />
                     <label htmlFor="high">HIGH PRIORITY</label>
                 </div>
@@ -161,20 +145,17 @@ export default function EditTask({ setEditTask, taskId }) {
                 {errors.priority && <p className={Styles.error}>Priority is required</p>}
             </section>
 
-
             <Dropdown
                 title={task?.assignee?.email || "Select a user"}
                 options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}
                 onSelect={(email) => handleAssignUser(email)}
-                heightStyle={{height:"fit-content"}}
+                heightStyle={{ height: "fit-content" }}
             />
-
 
             <section className={Styles.checklists}>
                 <p>
                     Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})
                 </p>
-
                 <ul className={Styles.checklist_container}>
                     {checkLists.map((task, index) => (
                         <li key={index} className={Styles.checklist_item}>
@@ -191,15 +172,11 @@ export default function EditTask({ setEditTask, taskId }) {
                                 onChange={(e) => handleChecklistNameChange(index, e.target.value)}
                             />
                             <span>
-                                <FaTrash
-                                    className={Styles.delete_icon}
-                                    onClick={() => handleTaskDeletion(index)}
-                                />
+                                <img src={Trash} alt="delete" onClick={handleTaskDeletion} />
                             </span>
                         </li>
                     ))}
                 </ul>
-
                 <button className={Styles.add_checklist_btn} type="button" onClick={handleTaskAddition}>
                     + Add New
                 </button>
@@ -217,8 +194,6 @@ export default function EditTask({ setEditTask, taskId }) {
                         minDate={new Date()}
                     />
                 </div>
-
-
                 <div className={Styles.form_buttons}>
                     <button className={Styles.cancel} onClick={() => setEditTask(false)} type="button">Cancel</button>
                     <button className={Styles.submit} type="submit">Save</button>
@@ -227,5 +202,3 @@ export default function EditTask({ setEditTask, taskId }) {
         </form>
     );
 }
-
-

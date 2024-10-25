@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Brand from '../../assets/images/logo.png'
+import Brand from '../../assets/images/Brand.svg'
 import Styles from './ShowTask.module.css'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ export default function ShowTask() {
         <div className={Styles.show_page}>
             <Link className={Styles.brand} to={"/"}>
                 <img src={Brand} alt="Brand Logo" />
+                <span>Pro Manage</span>
             </Link>
             {
                 loading ? (

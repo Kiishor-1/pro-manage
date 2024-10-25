@@ -110,8 +110,19 @@
     left: 0.5rem;
     color: gray;
 }
+
+.inputs .icon1_email{
+    top: 0.95rem;
+    left: 0.7rem;
+}
+
 .icon1 img{
     width: 1.7rem;
+    cursor: pointer;
+}
+
+.icon1 img.email_icon{
+    width: 1.4rem;
 }
 
 .inputs .icon2 {
@@ -124,6 +135,7 @@
 
 .icon2 img{
     width: 1.5rem;
+    cursor: pointer;
 }
 
 .inputs div input{

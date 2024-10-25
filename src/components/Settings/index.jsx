@@ -1,9 +1,9 @@
 import Styles from './Settings.module.css';
-import Mail from '../../assets/images/mail.png';
-import Eye from '../../assets/images/eye.png'
-import EyeOff from '../../assets/images/eyeOff.png'
-import User from '../../assets/images/user.png'
-import Lock from '../../assets/images/lock.png'
+import Mail from '../../assets/images/email.svg';
+import Eye from '../../assets/images/show.svg'
+import EyeOff from '../../assets/images/hide.svg'
+import User from '../../assets/images/Profile.svg'
+import Lock from '../../assets/images/lock.svg'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../slices/authSlice';
@@ -88,8 +88,8 @@ export default function Settings() {
               {...register('email')}
               className={errors.email ? Styles.input_error : ''}
             />
-            <span className={Styles.icon1}>
-              <img src={Mail} alt="email" />
+            <span className={`${Styles.icon1} ${Styles.icons1_email}`}>
+              <img className={Styles.email_icon} src={Mail} alt="email" />
             </span>
             {errors.email && <p className={Styles.error_message}>{errors.email.message}</p>}
           </div>

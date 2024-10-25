@@ -57,8 +57,19 @@
     left: 0.5rem;
     color: gray;
 }
+
+.inputs .icons1_email{
+    top: 14px;
+    left: 0.7rem;
+}
+
 .icon1 img{
     width: 1.7rem;
+    cursor: pointer;
+}
+
+.icon1 img.email_icon{
+    width: 1.3rem;
 }
 
 .inputs .icon2 {
@@ -71,7 +82,9 @@
 
 .icon2 img{
     width: 1.5rem;
+    cursor: pointer;
 }
+
 
 .inputs div input {
     backdrop-filter: blur(33.07671356201172px);

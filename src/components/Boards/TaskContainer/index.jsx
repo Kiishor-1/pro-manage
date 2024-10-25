@@ -15,15 +15,15 @@ export default function TaskContainer() {
         Done: []
     };
 
+    useEffect(() => {
+        dispatch(fetchUserTasks());
+    }, [dispatch]);
+
     tasks?.forEach((task) => {
         if (categorizedTasks.hasOwnProperty(task.category)) {
             categorizedTasks[task.category].push(task);
         }
     });
-
-    useEffect(() => {
-        dispatch(fetchUserTasks());
-    }, [dispatch]);
 
     const handleCategoryUpdate = () => {
         dispatch(fetchUserTasks()); 

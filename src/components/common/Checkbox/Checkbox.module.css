@@ -10,7 +10,7 @@
 }
 
 .checkbox_label {
-    border-radius: 6px;
+    border-radius: 7px;
     cursor: pointer;
     position: relative;
     display: flex;
@@ -18,15 +18,21 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: white;
-    border: 1px solid gainsboro;
+    border: 2px solid gainsboro;
     text-align: center;
+}
+.checkbox_label img{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
 
 
-.checkbox:checked + .checkbox_label {
-    border:none;
-    color: #17A2B8;
-    transform: scale(1.5);
+.checkbox:checked + .checkbox_label img{
+    opacity: 1;
+}
+
+.checkbox:checked + .checkbox_label{
+    border: none;
     margin: 0;
 }

@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Login.module.css';
 import AuthImage from '../../assets/images/authImage.png'
-import Mail from '../../assets/images/mail.png';
-import Eye from '../../assets/images/eye.png'
-import EyeOff from '../../assets/images/eyeOff.png'
-import Lock from '../../assets/images/lock.png'
+import Mail from '../../assets/images/email.svg';
+import Eye from '../../assets/images/show.svg'
+import EyeOff from '../../assets/images/hide.svg'
+import Lock from '../../assets/images/lock.svg'
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,8 +84,8 @@ export default function Login() {
           <div className={Styles.inputs}>
             <div>
               <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
-              <span className={Styles.icon1}>
-                <img src={Mail} alt="email" />
+              <span className={`${Styles.icon1} ${Styles.icon1_email}`}>
+                <img className={Styles.email_icon} src={Mail} alt="email" />
               </span>
             </div>
             <div>
