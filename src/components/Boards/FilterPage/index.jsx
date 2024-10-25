@@ -19,6 +19,8 @@ export default function FilterPage() {
         localStorage.setItem('taskFilter', filter);
     }, [filter, dispatch]);
 
+    console.log('filter',filter);
+
     const handleFilterChange = (value) => {
         setFilter(value);
         setIsDropdownOpen(false);

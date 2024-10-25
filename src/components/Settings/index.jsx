@@ -1,13 +1,15 @@
-import { HiOutlineEnvelope, HiOutlineUser } from 'react-icons/hi2';
 import Styles from './Settings.module.css';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { SlLock } from 'react-icons/sl';
+import Mail from '../../assets/images/mail.png';
+import Eye from '../../assets/images/eye.png'
+import EyeOff from '../../assets/images/eyeOff.png'
+import User from '../../assets/images/user.png'
+import Lock from '../../assets/images/lock.png'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form'; // Import react-hook-form
-import { toast } from 'react-hot-toast'; // For notifications
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 export default function Settings() {
   const dispatch = useDispatch();
@@ -15,7 +17,7 @@ export default function Settings() {
   const { user } = useSelector((state) => state.auth);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  
+
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       name: user?.name || "",
@@ -49,7 +51,7 @@ export default function Settings() {
       return "Both old and new passwords must be provided.";
     }
 
-    return true; 
+    return true;
   };
 
   const onSubmit = (formData) => {
@@ -57,7 +59,7 @@ export default function Settings() {
       toast.error("Please update at least one field.");
       return;
     }
-    
+
     dispatch(updateUser(formData));
   };
 
@@ -74,7 +76,7 @@ export default function Settings() {
               className={errors.name ? Styles.input_error : ''}
             />
             <span className={Styles.icon1}>
-              <HiOutlineUser />
+              <img src={User} alt="user" />
             </span>
             {errors.name && <p className={Styles.error_message}>{errors.name.message}</p>}
           </div>
@@ -87,7 +89,7 @@ export default function Settings() {
               className={errors.email ? Styles.input_error : ''}
             />
             <span className={Styles.icon1}>
-              <HiOutlineEnvelope />
+              <img src={Mail} alt="email" />
             </span>
             {errors.email && <p className={Styles.error_message}>{errors.email.message}</p>}
           </div>
@@ -102,12 +104,16 @@ export default function Settings() {
               className={errors.oldPassword ? Styles.input_error : ''}
             />
             <span className={Styles.icon1}>
-              <SlLock />
+              <img src={Lock} alt="lock icon" />
             </span>
             <span className={Styles.icon2} onClick={handleOldPasswordView}>
-              {showOldPassword ? <FiEyeOff /> : <FiEye />}
+              {showOldPassword ?
+                <img src={EyeOff} alt="hide" />
+                :
+                <img src={Eye} alt="show" />
+              }
             </span>
-            {errors.oldPassword && <p className={Styles.error_message} style={{fontSize:"1rem",color:"red",margin:"0"}}>{errors.oldPassword.message}</p>}
+            {errors.oldPassword && <p className={Styles.error_message} style={{ fontSize: "1rem", color: "red", margin: "0" }}>{errors.oldPassword.message}</p>}
           </div>
 
           <div>
@@ -120,12 +126,16 @@ export default function Settings() {
               className={errors.newPassword ? Styles.input_error : ''}
             />
             <span className={Styles.icon1}>
-              <SlLock />
+              <img src={Lock} alt="lock" />
             </span>
             <span className={Styles.icon2} onClick={handleNewPasswordView}>
-              {showNewPassword ? <FiEyeOff /> : <FiEye />}
+              {showNewPassword ?
+                <img src={EyeOff} alt="hide" />
+                :
+                <img src={Eye} alt="show" />
+              }
             </span>
-            {errors.newPassword && <p className={Styles.error_message} style={{fontSize:"1rem",color:"red",margin:"0"}}>{errors.newPassword.message}</p>}
+            {errors.newPassword && <p className={Styles.error_message} style={{ fontSize: "1rem", color: "red", margin: "0" }}>{errors.newPassword.message}</p>}
           </div>
         </div>
 

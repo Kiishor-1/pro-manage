@@ -103,20 +103,27 @@
 .inputs div{
     position: relative;
 }
-.inputs .icon1{
+
+.inputs .icon1 {
     position: absolute;
     top: 0.6rem;
-    left: 0.8rem;
+    left: 0.5rem;
+    color: gray;
+}
+.icon1 img{
+    width: 1.7rem;
+}
+
+.inputs .icon2 {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.8rem;
     font-size: 1.3rem;
     color: gray;
 }
 
-.inputs .icon2{
-    position: absolute;
-    top: 0.6rem;
-    right: 0.8rem;
-    font-size: 1.3rem;
-    color: gray;
+.icon2 img{
+    width: 1.5rem;
 }
 
 .inputs div input{

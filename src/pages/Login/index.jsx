@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Login.module.css';
 import AuthImage from '../../assets/images/authImage.png'
-import { FiEye } from "react-icons/fi";
-import { FiEyeOff } from "react-icons/fi";
-import { HiOutlineEnvelope } from "react-icons/hi2";
-import { SlLock } from 'react-icons/sl';
+import Mail from '../../assets/images/mail.png';
+import Eye from '../../assets/images/eye.png'
+import EyeOff from '../../assets/images/eyeOff.png'
+import Lock from '../../assets/images/lock.png'
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -85,16 +85,20 @@ export default function Login() {
             <div>
               <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <HiOutlineEnvelope />
+                <img src={Mail} alt="email" />
               </span>
             </div>
             <div>
               <input type={`${showPassword ? "text" : "password"}`} name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <SlLock />
+                <img src={Lock} alt="lock icons" />
               </span>
               <span className={Styles.icon2}>
-                {showPassword ? <FiEyeOff onClick={handlePasswordView} /> : <FiEye onClick={handlePasswordView} />}
+                {showPassword ?
+                  <img onClick={handlePasswordView} src={EyeOff} alt='hide'/>
+                  : 
+                  <img onClick={handlePasswordView} src={Eye} alt='show' />
+                 }
               </span>
             </div>
           </div>

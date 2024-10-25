@@ -96,7 +96,6 @@ export default function AddTask({ setAddTask }) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={Styles.add_task}>
-            {/* Title Section */}
             <section className={Styles.title}>
                 <label className={Styles.title_label}>Title</label>
                 <input

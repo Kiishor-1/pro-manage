@@ -43,7 +43,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             });
     };
 
-    console.log('task',task)
+    console.log('task', task)
 
 
     const handleShareClick = () => {
@@ -127,10 +127,22 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                     </div>
                     {showOptions && (
                         <div className={Styles.option_container}>
-                            <span onClick={() => setEditTask(true)} className={Styles.option}>Edit</span>
-                            <span onClick={handleShareClick} className={`${Styles.option} ${Styles.share}`}>Share</span>
-                            <span onClick={() => setDeleteTask(true)} className={`${Styles.option} ${Styles.option_delete}`}>Delete</span>
+                            <span onClick={() => {
+                                setEditTask(true);
+                                setShowOptions(false);
+                            }} className={Styles.option}>Edit</span>
+
+                            <span onClick={() => {
+                                handleShareClick();
+                                setShowOptions(false);
+                            }} className={`${Styles.option} ${Styles.share}`}>Share</span>
+
+                            <span onClick={() => {
+                                setDeleteTask(true);
+                                setShowOptions(false);
+                            }} className={`${Styles.option} ${Styles.option_delete}`}>Delete</span>
                         </div>
+
                     )}
                 </aside>
             </section>
@@ -191,7 +203,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                                                 className={Styles.category_button}
                                                 onClick={() => handleCategoryUpdate(category)}
                                             >
-                                                {category === 'InProgress' ? 'Progress': category === 'ToDo' ? 'To-Do': separateCamelCase(category) || "category"}
+                                                {category === 'InProgress' ? 'Progress' : category === 'ToDo' ? 'To-Do' : separateCamelCase(category) || "category"}
                                             </button>
                                         )}
                                     </span>

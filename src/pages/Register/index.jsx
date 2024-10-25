@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Register.module.css';
 import AuthImage from '../../assets/images/authImage.png'
-import { FiEye } from "react-icons/fi";
-import { FiEyeOff } from "react-icons/fi";
-import { HiOutlineEnvelope } from "react-icons/hi2";
-import { HiOutlineUser } from "react-icons/hi";
-import { SlLock } from 'react-icons/sl';
+import Mail from '../../assets/images/mail.png';
+import Eye from '../../assets/images/eye.png'
+import EyeOff from '../../assets/images/eyeOff.png'
+import User from '../../assets/images/user.png'
+import Lock from '../../assets/images/lock.png'
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -91,31 +91,39 @@ export default function Register() {
             <div className="">
               <input type="text" name='name' placeholder='Name' value={formData.name} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <HiOutlineUser />
+                <img src={User} alt="user" />
               </span>
             </div>
             <div className="">
               <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <HiOutlineEnvelope />
+                <img src={Mail} alt="email" />
               </span>
             </div>
             <div className="">
               <input type={`${showPassword ? "text" : "password"}`} name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <SlLock />
+                <img src={Lock} alt="lock" />
               </span>
               <span className={Styles.icon2}>
-                {showPassword ? <FiEyeOff onClick={handlePasswordView} /> : <FiEye onClick={handlePasswordView} />}
+                {showPassword ?
+                  <img src={EyeOff} onClick={handlePasswordView} />
+                  :
+                  <img src={Eye} onClick={handlePasswordView} />
+                }
               </span>
             </div>
             <div className="">
               <input type={`${showConfirmPassword ? "text" : "password"}`} name='confirmPassword' placeholder='Confirm Password' value={formData.confirmPassword} onChange={handleChange} />
               <span className={Styles.icon1}>
-                <SlLock />
+                <img src={Lock} alt="lock" />
               </span>
               <span className={Styles.icon2}>
-                {showConfirmPassword ? <FiEyeOff onClick={handleConfirmPasswordView} /> : <FiEye onClick={handleConfirmPasswordView} />}
+                {showConfirmPassword ?
+                  <img src={EyeOff} onClick={handleConfirmPasswordView} /> 
+                  :
+                  <img src={Eye} onClick={handleConfirmPasswordView} />
+                }
               </span>
             </div>
           </div>
