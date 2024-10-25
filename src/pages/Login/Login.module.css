@@ -75,6 +75,7 @@
     align-items: center;
     justify-content: space-around;
     height: 100%;
+    min-width: 400px;
 }
 
 .heading {
@@ -161,4 +162,20 @@ button.auth_login {
     text-decoration: none;
     font-size: 0.78rem;
     color: rgb(116, 116, 116);
+}
+
+@media screen and (max-width:450px) {
+    .circle{
+        width: 100px;
+        height:100px;
+        top: -1.8rem;
+    }
+    .banner_container {
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    .auth_image_container{
+        height: fit-content;
+    }
 }

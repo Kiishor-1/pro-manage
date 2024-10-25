@@ -5,10 +5,11 @@ import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { getTaskDetails } from '../../slices/taskSlice';
 import Checkbox from '../common/Checkbox';
+import SkeletonTaskCard from '../common/SkeletonTaskCard';
 export default function ShowTask() {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { task, error } = useSelector((state) => state.tasks);
+    const { task, error ,loading} = useSelector((state) => state.tasks);
     useEffect(() => {
         dispatch(getTaskDetails(id));
     }, [id, dispatch])
@@ -21,7 +22,13 @@ export default function ShowTask() {
             <Link className={Styles.brand} to={"/"}>
                 <img src={Brand} alt="Brand Logo" />
             </Link>
-            <div className={Styles.task_details}>
+            {
+                loading ? (
+                    <div className={Styles.skeleton}>
+                        <SkeletonTaskCard/>
+                    </div>
+                ):(
+                    <div className={Styles.task_details}>
                 <section className={Styles.task_header}>
                     <aside className={Styles.priority_section}>
                         <span className={Styles.priority_indicator} style={{ backgroundColor: task?.priority === "HIGH-PRIORITY" ? '#eb109e' : task?.priority === "MODERATE-PRIORITY" ? '#17A2B8' : '#30bf41' }}></span>
@@ -66,6 +73,8 @@ export default function ShowTask() {
                         </span>
                     </section>}
             </div>
+                )
+            }
         </div >
     )
 }

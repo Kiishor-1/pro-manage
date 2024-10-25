@@ -6,7 +6,7 @@ import Styles from './TaskContainer.module.css';
 
 export default function TaskContainer() {
     const dispatch = useDispatch();
-    const { tasks } = useSelector((state) => state.tasks);
+    const { tasks, loading } = useSelector((state) => state.tasks);
 
     const categorizedTasks = {
         Backlog: [],
@@ -38,6 +38,7 @@ export default function TaskContainer() {
                         title={category}
                         tasks={categoryTasks}
                         onCategoryUpdate={handleCategoryUpdate} 
+                        loading={loading}
                     />
                 ))
             }

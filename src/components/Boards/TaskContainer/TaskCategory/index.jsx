@@ -6,8 +6,9 @@ import { useState, useEffect, useRef } from 'react';
 import Modal from '../../../Modals';
 import AddTask from '../../../Modals/AddTask';
 import separateCamelCase from '../../../../helpers/camelCase';
+import SkeletonTaskCard from '../../../common/SkeletonTaskCard';
 
-export default function TaskCategory({ title, tasks, onCategoryUpdate }) {
+export default function TaskCategory({ title, tasks, onCategoryUpdate, loading }) {
     const [addTask, setAddTask] = useState(false);
     const taskCategoryRef = useRef(null);
     const [hasScroll, setHasScroll] = useState(false);
@@ -52,18 +53,24 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate }) {
                 </div>
                 <div className={`${Styles.all_tasks} ${hasScroll ? Styles.balance_padding : ''}`}>
                     {
-                        tasks.length > 0 ? (
-                            tasks.map((task, id) => (
-                                <TaskCard
-                                    id={id}
-                                    key={task._id}
-                                    task={task}
-                                    collapseAll={collapseAll}
-                                    onCategoryUpdate={onCategoryUpdate}
-                                />
+                        loading?(
+                            [...Array(1)].map((_, index)=>(
+                                <SkeletonTaskCard key={index}/>
                             ))
-                        ) : (
-                            <p className={Styles.no_task}>No tasks created yet</p>
+                        ):(
+                            tasks.length > 0 ? (
+                                tasks.map((task, id) => (
+                                    <TaskCard
+                                        id={id}
+                                        key={task._id}
+                                        task={task}
+                                        collapseAll={collapseAll}
+                                        onCategoryUpdate={onCategoryUpdate}
+                                    />
+                                ))
+                            ) : (
+                                <p className={Styles.no_task}>No tasks created yet</p>
+                            )
                         )
                     }
                 </div>

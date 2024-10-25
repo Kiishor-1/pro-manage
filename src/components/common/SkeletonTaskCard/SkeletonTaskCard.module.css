@@ -1,0 +1,187 @@
+/* .skeleton_task_card {
+    border-radius: 0.6rem;
+    margin-bottom: 10px;
+    width: 100%;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.skeleton_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+.skeleton_priority {
+    width: 60%;
+    height: 30px;
+    border-radius: 0.5rem;
+    background-color: gainsboro;
+}
+
+.skeleton_options {
+    width: 60px;
+    height: 30px;
+    border-radius: 0.4rem;
+    background-color: gainsboro;
+}
+
+.skeleton_body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.skeleton_body span.heading{
+    width: 40%;
+    height: 30px;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    background-color: gainsboro;
+}
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.content{
+    width: 100%;
+    height: 50px;
+    background-color: gainsboro;
+    border-radius: 0.5rem;
+}
+
+.skeleton_footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer_right {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.3rem;
+}
+
+.footer_item {
+    padding: 1rem 2rem;
+    background-color: gainsboro;
+    border-radius: 0.3rem;
+} */
+
+
+@keyframes fade {
+    0% {
+        background-color: gainsboro;
+    }
+    50% {
+        background-color: rgb(208, 208, 208);
+    }
+    100% {
+        background-color: gainsboro;
+    }
+}
+
+.skeleton_task_card {
+    border-radius: 0.6rem;
+    margin-bottom: 10px;
+    width: 100%;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    overflow: hidden;
+}
+
+.skeleton_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+.skeleton_priority,
+.skeleton_options,
+.skeleton_body span.heading,
+.content,
+.footer_item {
+    animation: fade 1.5s ease-in-out infinite;
+}
+
+.skeleton_priority {
+    width: 60%;
+    height: 30px;
+    border-radius: 0.5rem;
+    background-color: gainsboro;
+    animation-delay: 0.1s;
+}
+
+.skeleton_options {
+    width: 60px;
+    height: 30px;
+    border-radius: 0.4rem;
+    background-color: gainsboro;
+    animation-delay: 0.2s;
+}
+
+.skeleton_body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.skeleton_body span.heading {
+    width: 40%;
+    height: 30px;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    background-color: gainsboro;
+    animation-delay: 0.3s;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.content {
+    width: 100%;
+    height: 50px;
+    background-color: gainsboro;
+    border-radius: 0.5rem;
+    animation-delay: 0.4s;
+}
+
+.skeleton_footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer_right {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.3rem;
+}
+
+.footer_item {
+    padding: 1rem 2rem;
+    background-color: gainsboro;
+    border-radius: 0.3rem;
+    animation-delay: 0.5s;
+}

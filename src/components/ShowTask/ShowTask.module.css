@@ -21,13 +21,24 @@
     padding: 1rem;
 }
 
-@media screen and (max-width:768px) {
+.skeleton{
+    width: 546px;
+    margin: 4rem auto;
+    border: 2px solid gainsboro;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+@media screen and (max-width:550px) {
     .show_page{
         padding: 2rem 1rem;
     }
     .task_details{
         width: 100%;
         margin: 2rem auto;
+    }
+    .skeleton{
+        width: 100%;
     }
 }
 
@@ -142,4 +153,5 @@ input[type="checkbox"] {
 .error_message{
     font-size: 2rem;
     padding: 1rem;
+    font-family: 'Poppins';
 }

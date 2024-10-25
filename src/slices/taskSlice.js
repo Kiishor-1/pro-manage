@@ -44,7 +44,7 @@ export const createTask = createAsyncThunk('tasks/createTask', async (taskData, 
 
 
 export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_, { rejectWithValue, getState }) => {
-    const toastId = toast.loading("Fetching Tasks...");
+    // const toastId = toast.loading("Fetching Tasks...");
     const { token } = getState().auth;
     try {
         const response = await axios.get(GET_ALL_TASKS, {
@@ -55,17 +55,17 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
 
 
         if (!response.data.success) {
-            toast.dismiss(toastId);
+            // toast.dismiss(toastId);
             toast.error(response?.data?.error || 'Failed to fetch tasks');
             return rejectWithValue(response?.data?.error || 'Failed to fetch tasks');
         }
 
-        toast.dismiss(toastId);
-        toast.success('Tasks fetched successfully');
+        // toast.dismiss(toastId);
+        // toast.success('Tasks fetched successfully');
         return response.data.tasks;
     } catch (error) {
         console.log(error);
-        toast.dismiss(toastId);
+        // toast.dismiss(toastId);
         toast.error(error?.response?.data?.error || 'Error fetching tasks');
         return rejectWithValue(error?.response?.data?.error || 'Error fetching tasks');
     }
@@ -73,7 +73,7 @@ export const fetchUserTasks = createAsyncThunk('tasks/fetchUserTasks', async (_,
 
 
 export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (taskId, { rejectWithValue, getState }) => {
-    const toastId = toast.loading("Fetching Task Details...");
+    // const toastId = toast.loading("Fetching Task Details...");
     const { token } = getState().auth;
     try {
         const response = await axios.get(GET_TASK_DETAILS(taskId), {
@@ -83,17 +83,17 @@ export const getTaskDetails = createAsyncThunk('tasks/getTaskDetails', async (ta
         });
 
         if (!response.data.success) {
-            toast.dismiss(toastId);
+            // toast.dismiss(toastId);
             toast.error(response?.data?.error || 'Failed to fetch task details');
             return rejectWithValue(response?.data?.error || 'Failed to fetch task details');
         }
 
-        toast.dismiss(toastId);
-        toast.success('Task details fetched successfully');
+        // toast.dismiss(toastId);
+        // toast.success('Task details fetched successfully');
         return response.data.task;
     } catch (error) {
         console.log(error)
-        toast.dismiss(toastId);
+        // toast.dismiss(toastId);
         toast.error(error?.response?.data?.error || 'Error fetching task details');
         return rejectWithValue(error?.response?.data?.error || 'Error fetching task details');
     }

@@ -78,6 +78,7 @@
     align-items: center;
     justify-content: space-around;
     height: 100%;
+    min-width: 400px;
 }
 
 .heading {
@@ -167,8 +168,18 @@ button.auth_register {
     color: rgb(116, 116, 116);
 }
 
-/* @media screen and (max-width:992px) {
-    .authBannerSection {
-        display: none;
+@media screen and (max-width:500px) {
+    .circle{
+        width: 100px;
+        height:100px;
+        top: -1.8rem;
     }
-} */
+    .banner_container {
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    .auth_image_container{
+        height: fit-content;
+    }
+}

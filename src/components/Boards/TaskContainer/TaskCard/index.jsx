@@ -43,7 +43,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             });
     };
 
-    // console.log('task',task)
+    console.log('task',task)
 
 
     const handleShareClick = () => {
