@@ -5,6 +5,7 @@
     display: flex;
     gap: 1rem;
     flex-wrap: nowrap;
+    padding-bottom: 0.6rem;
 }
 
 .task_container::-webkit-scrollbar {
@@ -14,7 +15,7 @@
 
 
 .task_container::-webkit-scrollbar-thumb {
-    background-color: #77a0baa5;
+    background: #9CB7C5;
     border-radius: 1rem;
     width: 5px;
 }

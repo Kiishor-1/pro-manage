@@ -3,24 +3,25 @@ import Styles from './EditTask.module.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from 'react-redux';
-import Trash from '../../../assets/images/Delete.svg'
+import Trash from '../../../assets/images/Delete.svg';
 import axios from 'axios';
 import { USER_ENDPOINTS } from '../../../services/api';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../../common/Dropdown';
 import Checkbox from '../../common/Checkbox';
+import Badge from '../../common/Badge';
+import { updateTask } from '../../../slices/taskSlice';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
 export default function EditTask({ setEditTask, task }) {
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, setError, clearErrors } = useForm();
 
     const [checkLists, setCheckLists] = useState([]);
     const [users, setUsers] = useState([]);
     const { user } = useSelector((state) => state.auth);
     const [selectedDate, setSelectedDate] = useState(null);
-
 
     useEffect(() => {
         if (task) {
@@ -49,6 +50,7 @@ export default function EditTask({ setEditTask, task }) {
     const handleTaskAddition = () => {
         const newChecklistItem = { tag: "", isDone: false };
         setCheckLists((prev) => [...prev, newChecklistItem]);
+        clearErrors("checkLists"); 
     };
 
     const handleChecklistNameChange = (index, newTag) => {
@@ -66,6 +68,12 @@ export default function EditTask({ setEditTask, task }) {
     const handleTaskDeletion = (index) => {
         const updatedTasks = checkLists.filter((_, i) => i !== index);
         setCheckLists(updatedTasks);
+        if (updatedTasks.length === 0) {
+            setError("checkLists", {
+                type: "manual",
+                message: "At least one checklist item is required",
+            });
+        }
     };
 
     const handleDateChange = (selectedDate) => {
@@ -77,13 +85,19 @@ export default function EditTask({ setEditTask, task }) {
     };
 
     const onSubmit = async (data) => {
+        if (checkLists.length === 0) {
+            setError("checkLists", {
+                type: "manual",
+                message: "At least one checklist item is required",
+            });
+            return;
+        }
+
         const formData = {
             ...data,
             date: selectedDate,
             checkLists,
         };
-
-        // console.log(formData)
 
         try {
             const res = await dispatch(updateTask({ taskId: task._id, updateData: formData }));
@@ -95,54 +109,57 @@ export default function EditTask({ setEditTask, task }) {
         }
     };
 
-
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={Styles.edit_task}>
             <section className={Styles.title}>
-                <label className={Styles.title_label}>Title</label>
+                <label className={Styles.title_label}>Title<Badge/></label>
                 <input
                     className={Styles.title_input}
                     type="text"
                     name='title'
                     placeholder='Enter Task Title'
-                    {...register("title", { required: true })}
+                    {...register("title", { required: "Title is required" })}
                 />
-                {errors.title && <p className={Styles.error}>Title is required</p>}
+                {errors.title && <p className={Styles.error}>{errors.title.message}</p>}
             </section>
 
-            <section className={Styles.priority}>
-                <span className={Styles.priority_heading}>Select Priority</span>
-                <div className={Styles.priority_item}>
-                    <input
-                        type="radio"
-                        name="priority"
-                        id="high"
-                        value="HIGH-PRIORITY"
-                        {...register("priority", { required: true })}
-                    />
-                    <label htmlFor="high">HIGH PRIORITY</label>
+             <section className={Styles.priority}>
+                <span className={Styles.priority_heading}>Select Priority<Badge /></span>
+                <div className={Styles.select_priority}>
+                    <div className={Styles.all_priorities}>
+                        <div className={Styles.priority_item}>
+                            <input
+                                type="radio"
+                                name="priority"
+                                id="high"
+                                value="HIGH-PRIORITY"
+                                {...register('priority', { required: "Priority is required" })}
+                            />
+                            <label htmlFor="high">HIGH PRIORITY</label>
+                        </div>
+                        <div className={Styles.priority_item}>
+                            <input
+                                type="radio"
+                                name="priority"
+                                id="moderate"
+                                value="MODERATE-PRIORITY"
+                                {...register('priority')}
+                            />
+                            <label htmlFor="moderate">MODERATE PRIORITY</label>
+                        </div>
+                        <div className={Styles.priority_item}>
+                            <input
+                                type="radio"
+                                name="priority"
+                                id="low"
+                                value="LOW-PRIORITY"
+                                {...register('priority')}
+                            />
+                            <label htmlFor="low">LOW PRIORITY</label>
+                        </div>
+                    </div>
+                    {errors.priority && <span className={Styles.priority_error}>{errors.priority.message}</span>}
                 </div>
-                <div className={Styles.priority_item}>
-                    <input
-                        type="radio"
-                        name="priority"
-                        id="moderate"
-                        value="MODERATE-PRIORITY"
-                        {...register("priority", { required: true })}
-                    />
-                    <label htmlFor="moderate">MODERATE PRIORITY</label>
-                </div>
-                <div className={Styles.priority_item}>
-                    <input
-                        type="radio"
-                        name="priority"
-                        id="low"
-                        value="LOW-PRIORITY"
-                        {...register("priority", { required: true })}
-                    />
-                    <label htmlFor="low">LOW PRIORITY</label>
-                </div>
-                {errors.priority && <p className={Styles.error}>Priority is required</p>}
             </section>
 
             <Dropdown
@@ -154,7 +171,7 @@ export default function EditTask({ setEditTask, task }) {
 
             <section className={Styles.checklists}>
                 <p>
-                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})
+                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})<Badge/>
                 </p>
                 <ul className={Styles.checklist_container}>
                     {checkLists.map((task, index) => (
@@ -172,11 +189,12 @@ export default function EditTask({ setEditTask, task }) {
                                 onChange={(e) => handleChecklistNameChange(index, e.target.value)}
                             />
                             <span>
-                                <img src={Trash} alt="delete" onClick={handleTaskDeletion} />
+                                <img src={Trash} alt="delete" onClick={() => handleTaskDeletion(index)} />
                             </span>
                         </li>
                     ))}
                 </ul>
+                {errors.checkLists && <p className={Styles.error}>{errors.checkLists.message}</p>}
                 <button className={Styles.add_checklist_btn} type="button" onClick={handleTaskAddition}>
                     + Add New
                 </button>
@@ -188,7 +206,7 @@ export default function EditTask({ setEditTask, task }) {
                         selected={selectedDate}
                         onChange={handleDateChange}
                         placeholderText="Select Due Date"
-                        dateFormat="yyyy/MM/dd"
+                        dateFormat="MM/dd/yyyy"
                         className={Styles.date_picker_input}
                         popperPlacement="bottom-start"
                         minDate={new Date()}

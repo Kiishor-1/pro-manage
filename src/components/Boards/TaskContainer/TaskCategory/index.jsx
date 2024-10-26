@@ -58,7 +58,7 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate, loading }
                                 <SkeletonTaskCard key={index}/>
                             ))
                         ):(
-                            tasks.length > 0 ? (
+                            tasks.length > 0 && (
                                 tasks.map((task, id) => (
                                     <TaskCard
                                         id={id}
@@ -68,9 +68,10 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate, loading }
                                         onCategoryUpdate={onCategoryUpdate}
                                     />
                                 ))
-                            ) : (
-                                <p className={Styles.no_task}>No tasks created yet</p>
-                            )
+                            ) 
+                            // : (
+                            //     <p className={Styles.no_task}>No tasks created yet</p>
+                            // )
                         )
                     }
                 </div>

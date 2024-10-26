@@ -5,11 +5,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../slices/taskSlice';
-import Trash from '../../../assets/images/Delete.svg'
+import Trash from '../../../assets/images/Delete.svg';
 import Checkbox from '../../common/Checkbox';
 import Dropdown from '../../common/Dropdown';
 import axios from 'axios';
 import { USER_ENDPOINTS } from '../../../services/api';
+import Badge from '../../common/Badge';
+import toast from 'react-hot-toast';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
@@ -17,20 +19,19 @@ export default function AddTask({ setAddTask }) {
     const dispatch = useDispatch();
     const [checkLists, setCheckLists] = useState([]);
     const [dueDate, setDueDate] = useState(null);
-    const [assignee, setAssignee] = useState(""); 
+    const [assignee, setAssignee] = useState("");
     const [users, setUsers] = useState([]);
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue, watch,trigger } = useForm({
         defaultValues: {
             title: "",
             priority: "",
             checkLists: [],
             date: null,
-            assignee: "", 
+            assignee: "",
         },
     });
 
     const { user } = useSelector((state) => state.auth);
-
 
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -75,15 +76,28 @@ export default function AddTask({ setAddTask }) {
         setAssignee(selectedEmail);
     };
 
+    useEffect(() => {
+        setValue('checkLists', checkLists); // Sync checkLists with react-hook-form
+        register('checkLists', {
+            required: "Checklist is required",
+            validate: value => value.length >= 1 || "At least one checklist item is required",
+        });
+        // trigger('checkLists'); // Trigger validation for checkLists field
+    }, [checkLists, setValue, trigger, register]);
+    
+
     const onSubmit = async (data) => {
+        if (checkLists.length < 1) {
+            toast.error("Please add at least one checklist item.");
+            return;
+        }
+
         const taskData = {
             ...data,
             checkLists,
             date: dueDate,
-            assignee, 
+            assignee,
         };
-
-        // console.log('Submitting taskData:', taskData);
 
         await dispatch(createTask(taskData)).then((res) => {
             if (res.type === 'tasks/createTask/fulfilled') {
@@ -97,7 +111,7 @@ export default function AddTask({ setAddTask }) {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={Styles.add_task}>
             <section className={Styles.title}>
-                <label className={Styles.title_label}>Title</label>
+                <label className={Styles.title_label}>Title<Badge /></label>
                 <input
                     className={Styles.title_input}
                     type="text"
@@ -109,7 +123,7 @@ export default function AddTask({ setAddTask }) {
             </section>
 
             <section className={Styles.priority}>
-                <span className={Styles.priority_heading}>Select Priority</span>
+                <span className={Styles.priority_heading}>Select Priority<Badge /></span>
                 <div className={Styles.select_priority}>
                     <div className={Styles.all_priorities}>
                         <div className={Styles.priority_item}>
@@ -159,7 +173,7 @@ export default function AddTask({ setAddTask }) {
 
             <section className={Styles.checklists}>
                 <p>
-                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})
+                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})<Badge />
                 </p>
                 <ul className={Styles.checklist_container}>
                     {checkLists.map((task, index) => (
@@ -177,12 +191,13 @@ export default function AddTask({ setAddTask }) {
                                 onChange={(e) => handleChecklistNameChange(index, e.target.value)}
                             />
                             <span>
-                                <img src={Trash} alt="delete" onClick={()=>handleTaskDeletion(index)} />
+                                <img src={Trash} alt="delete" onClick={() => handleTaskDeletion(index)} />
                             </span>
                         </li>
                     ))}
                 </ul>
-
+                {/* {errors.checkLists && <span className={Styles.error}>{errors.checkLists.message}</span>} */}
+                {errors.checkLists && <span className={Styles.error}>At least one checklist item is required</span>}
                 <button className={Styles.add_checklist_btn} type="button" onClick={handleTaskAddition}>
                     + Add New
                 </button>
@@ -194,10 +209,12 @@ export default function AddTask({ setAddTask }) {
                         selected={dueDate}
                         onChange={handleDateChange}
                         placeholderText="Select Due Date"
-                        dateFormat="yyyy/MM/dd"
-                        className={Styles.date_picker_input}
+                        dateFormat="MM/dd/yyyy"
                         popperPlacement="bottom-start"
+                        className={`${Styles.customDatepickerInput} ${Styles.date_picker_input}`}
+                        popperClassName={Styles.customDatepickerPopper}
                         minDate={new Date()}
+                        id={Styles.due}
                     />
                 </div>
 
