@@ -101,9 +101,9 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
         return Styles.due_date;
     };
 
-    useEffect(() => {
-        console.log("editTask:", editTask);  
-    }, [editTask]);
+    // useEffect(() => {
+    //     console.log("editTask:", editTask);  
+    // }, [editTask]);
 
 
     return (

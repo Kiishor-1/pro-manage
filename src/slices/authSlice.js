@@ -7,6 +7,21 @@ import axios from "axios";
 const { REGISTER, LOGIN } = AUTH_ENDPOINTS;
 const { UPDATE_USER } = USER_ENDPOINTS;
 
+
+export const isTokenExpired = (token) => {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        const now = Date.now() / 1000;
+        return payload.exp < now;
+    } catch (error) {
+        console.error('Error during checking token expiration:', error);
+        return true; 
+    }
+};
+
+
 export const registerUser = createAsyncThunk('auth/registerUser', async (credentials, { rejectWithValue }) => {
     const toastId = toast.loading('User is being registered');
     try {
