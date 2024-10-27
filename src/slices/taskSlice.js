@@ -234,6 +234,7 @@ const taskSlice = createSlice({
         tasks: [],
         task: null,
         loading: false,
+        categoryUpdateLoading:false,
         error: null,
         analytics: null
     },
@@ -329,18 +330,18 @@ const taskSlice = createSlice({
             });
 
         builder.addCase(updateTaskCategory.pending, (state) => {
-            state.loading = true;
+            state.categoryUpdateLoading = true;
             state.error = null;
         })
             .addCase(updateTaskCategory.fulfilled, (state, action) => {
-                state.loading = false;
+                state.categoryUpdateLoading = false;
                 const updatedTask = action.payload;
                 state.tasks = state.tasks.map((task) =>
                     task._id === updatedTask._id ? updatedTask : task
                 );
             })
             .addCase(updateTaskCategory.rejected, (state, action) => {
-                state.loading = false;
+                state.categoryUpdateLoading = false;
                 state.error = action.payload;
             });
 

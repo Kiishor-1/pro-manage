@@ -21,6 +21,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
     const [editTask, setEditTask] = useState(false);
     const [loadingCategories, setLoadingCategories] = useState({});
     const [copied, setCopied] = useState(false);
+    const { categoryUpdateLoading } = useSelector((state)=>state.tasks);
 
     const handleChecklistDropdown = () => {
         setOpenChecklist(!openChecklist);
@@ -31,7 +32,9 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
     };
 
     const handleCategoryUpdate = async (newCategory) => {
-        setLoadingCategories((prev) => ({ ...prev, [newCategory]: true }));
+        if(categoryUpdateLoading){
+            setLoadingCategories((prev) => ({ ...prev, [newCategory]: true }));
+        }
 
         await dispatch(updateTaskCategory({ taskId: task._id, newCategory }))
             .then(() => {
