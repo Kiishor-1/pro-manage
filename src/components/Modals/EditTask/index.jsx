@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Styles from './EditTask.module.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from '../../common/DatePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import Trash from '../../../assets/images/Delete.svg';
 import axios from 'axios';
@@ -50,7 +49,7 @@ export default function EditTask({ setEditTask, task }) {
     const handleTaskAddition = () => {
         const newChecklistItem = { tag: "", isDone: false };
         setCheckLists((prev) => [...prev, newChecklistItem]);
-        clearErrors("checkLists"); 
+        clearErrors("checkLists");
     };
 
     const handleChecklistNameChange = (index, newTag) => {
@@ -112,7 +111,7 @@ export default function EditTask({ setEditTask, task }) {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={Styles.edit_task}>
             <section className={Styles.title}>
-                <label className={Styles.title_label}>Title<Badge/></label>
+                <label className={Styles.title_label}>Title<Badge /></label>
                 <input
                     className={Styles.title_input}
                     type="text"
@@ -123,7 +122,7 @@ export default function EditTask({ setEditTask, task }) {
                 {errors.title && <p className={Styles.error}>{errors.title.message}</p>}
             </section>
 
-             <section className={Styles.priority}>
+            <section className={Styles.priority}>
                 <span className={Styles.priority_heading}>Select Priority<Badge /></span>
                 <div className={Styles.select_priority}>
                     <div className={Styles.all_priorities}>
@@ -135,7 +134,10 @@ export default function EditTask({ setEditTask, task }) {
                                 value="HIGH-PRIORITY"
                                 {...register('priority', { required: "Priority is required" })}
                             />
-                            <label htmlFor="high">HIGH PRIORITY</label>
+                            <label htmlFor="high">
+                                <span className={Styles.variant_high} ></span>
+                                HIGH PRIORITY
+                            </label>
                         </div>
                         <div className={Styles.priority_item}>
                             <input
@@ -145,7 +147,10 @@ export default function EditTask({ setEditTask, task }) {
                                 value="MODERATE-PRIORITY"
                                 {...register('priority')}
                             />
-                            <label htmlFor="moderate">MODERATE PRIORITY</label>
+                            <label htmlFor="moderate">
+                                <span className={Styles.variant_moderate} ></span>
+                                MODERATE PRIORITY
+                            </label>
                         </div>
                         <div className={Styles.priority_item}>
                             <input
@@ -155,23 +160,29 @@ export default function EditTask({ setEditTask, task }) {
                                 value="LOW-PRIORITY"
                                 {...register('priority')}
                             />
-                            <label htmlFor="low">LOW PRIORITY</label>
+                            <label htmlFor="low">
+                                <span className={Styles.variant_low} ></span>
+                                LOW PRIORITY
+                            </label>
                         </div>
                     </div>
                     {errors.priority && <span className={Styles.priority_error}>{errors.priority.message}</span>}
                 </div>
             </section>
 
-            <Dropdown
-                title={task?.assignee?.email || "Select a user"}
-                options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}
-                onSelect={(email) => handleAssignUser(email)}
-                heightStyle={{ height: "fit-content" }}
-            />
+            <section className={Styles.assignee}>
+                <label htmlFor="assignee" className={Styles.assignee_label}>Assign To</label>
+                <Dropdown
+                    title={"Add a assignee"}
+                    onSelect={(email)=>handleAssignUser(email)}
+                    heightStyle={{ height: "fit-content" }}
+                    options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}
+                />
+            </section>
 
             <section className={Styles.checklists}>
                 <p>
-                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})<Badge/>
+                    Checklist ({checkLists.filter(item => item.isDone).length}/{checkLists.length})<Badge />
                 </p>
                 <ul className={Styles.checklist_container}>
                     {checkLists.map((task, index) => (
@@ -204,11 +215,7 @@ export default function EditTask({ setEditTask, task }) {
                 <div className={Styles.due_date}>
                     <DatePicker
                         selected={selectedDate}
-                        onChange={handleDateChange}
-                        placeholderText="Select Due Date"
-                        dateFormat="MM/dd/yyyy"
-                        className={Styles.date_picker_input}
-                        popperPlacement="bottom-start"
+                        onDateChange={handleDateChange}
                         minDate={new Date()}
                     />
                 </div>

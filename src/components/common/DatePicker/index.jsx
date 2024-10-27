@@ -1,44 +1,69 @@
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Styles from './DatePicker.module.css';
 
-const DatePicker = () => {
-    const [selectedDate, setSelectedDate] = useState('');
+export default function DatePicker({ onDateChange, selected }) {
+    const dateRef = useRef(null);
+    const [label, setLabel] = useState("Select Date");
 
-    const handleChange = (event) => {
-        setSelectedDate(event.target.value);
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    useEffect(() => {
+        if (selected) {
+            const date = new Date(selected);
+            const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+            });
+            setLabel(formattedDate);
+        }
+    }, [selected]);
+
+    const handleOpenPicker = () => {
+        if (dateRef.current) {
+            setTimeout(() => dateRef.current.showPicker(), 100);
+        }
+    };
+
+    const handleChange = (e) => {
+        const dateValue = e.target.value;
+        const date = new Date(dateValue);
+        if (!isNaN(date.getTime())) {
+            const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+            });
+            setLabel(formattedDate);
+            onDateChange && onDateChange(dateValue);
+        } else {
+            setLabel("Select Date");
+            onDateChange && onDateChange(null);
+        }
     };
 
     return (
-        <div style={{ margin: '20px' }}>
-            {/* <label 
-                htmlFor="date-picker" 
-                style={{ cursor: 'pointer', display: 'block', marginBottom: '8px' }}
+        <div className={Styles.date_picker}>
+            <button
+                type='button'
+                onClick={handleOpenPicker}
+                className={Styles.select_date_button}
             >
-                Select a date
-            </label> */}
+                {label}
+            </button>
             <input
                 type="date"
-                id="date-picker"
-                value={selectedDate}
-                placeholder='Choose Date'
+                ref={dateRef}
                 onChange={handleChange}
-                style={{
-                    appearance: 'none', 
-                    padding: '8px 12px',
-                    backgroundColor: 'white',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    userSelect:'none'
-                }}
+                className={Styles.hidden_date_input}
+                min={getTodayDate()}
             />
-            {selectedDate ? (
-                <div style={{ marginTop: '8px' }}>
-                    {new Date(selectedDate).toLocaleDateString()}
-                </div>):('Choose Date')
-            }
         </div>
     );
-};
-
-export default DatePicker;
+}

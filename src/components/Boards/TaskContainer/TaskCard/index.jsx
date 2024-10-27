@@ -10,6 +10,7 @@ import EditTask from '../../../Modals/EditTask';
 import toast from 'react-hot-toast';
 import Checkbox from '../../../common/Checkbox';
 import separateCamelCase from '../../../../helpers/camelCase';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
     const dispatch = useDispatch();
@@ -162,7 +163,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                                     <li key={index} className={Styles.checklist}>
                                         <div className={Styles.check_item}>
                                             <Checkbox
-                                                labelId={index}
+                                                labelId={uuidv4()}
                                                 isChecked={item?.isDone}
                                             />
                                             <label htmlFor={`checklist-${index}`} className={Styles.item_label}>

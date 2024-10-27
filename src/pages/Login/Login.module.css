@@ -25,7 +25,7 @@
     color: white;
     font-weight: 600;
     font-size: 33.08px;
-    line-height: 66.15px;
+    /* line-height: 66.15px; */
     text-align: center;
     margin: 0;
 }
@@ -163,6 +163,9 @@ button.auth_login {
     color: white;
     background-color: #17A2B8;
     cursor: pointer;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .auth_register {
@@ -175,12 +178,17 @@ button.auth_login {
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .account_check{
     text-decoration: none;
-    font-size: 0.78rem;
-    color: rgb(116, 116, 116);
+    color: #828282;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 @media screen and (max-width:450px) {

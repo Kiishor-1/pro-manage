@@ -179,6 +179,7 @@ export const updateTaskCategory = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
+            toast.success('Task category updated')
             return response.data;
         } catch (error) {
             toast.error(error.response?.data?.error || 'Failed to update task category');

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Styles from './AddTask.module.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from '../../common/DatePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../slices/taskSlice';
 import Trash from '../../../assets/images/Delete.svg';
@@ -12,6 +11,7 @@ import axios from 'axios';
 import { USER_ENDPOINTS } from '../../../services/api';
 import Badge from '../../common/Badge';
 import toast from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
@@ -21,7 +21,7 @@ export default function AddTask({ setAddTask }) {
     const [dueDate, setDueDate] = useState(null);
     const [assignee, setAssignee] = useState("");
     const [users, setUsers] = useState([]);
-    const { register, handleSubmit, formState: { errors }, setValue, watch,trigger } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue, watch, trigger } = useForm({
         defaultValues: {
             title: "",
             priority: "",
@@ -77,14 +77,14 @@ export default function AddTask({ setAddTask }) {
     };
 
     useEffect(() => {
-        setValue('checkLists', checkLists); // Sync checkLists with react-hook-form
+        setValue('checkLists', checkLists);
         register('checkLists', {
             required: "Checklist is required",
             validate: value => value.length >= 1 || "At least one checklist item is required",
         });
         // trigger('checkLists'); // Trigger validation for checkLists field
     }, [checkLists, setValue, trigger, register]);
-    
+
 
     const onSubmit = async (data) => {
         if (checkLists.length < 1) {
@@ -134,7 +134,10 @@ export default function AddTask({ setAddTask }) {
                                 value="HIGH-PRIORITY"
                                 {...register('priority', { required: "Priority is required" })}
                             />
-                            <label htmlFor="high">HIGH PRIORITY</label>
+                            <label htmlFor="high">
+                                <span className={Styles.variant_high} ></span>
+                                HIGH PRIORITY
+                            </label>
                         </div>
                         <div className={Styles.priority_item}>
                             <input
@@ -144,7 +147,10 @@ export default function AddTask({ setAddTask }) {
                                 value="MODERATE-PRIORITY"
                                 {...register('priority')}
                             />
-                            <label htmlFor="moderate">MODERATE PRIORITY</label>
+                            <label htmlFor="moderate">
+                                <span className={Styles.variant_moderate} ></span>
+                                MODERATE PRIORITY
+                            </label>
                         </div>
                         <div className={Styles.priority_item}>
                             <input
@@ -154,7 +160,10 @@ export default function AddTask({ setAddTask }) {
                                 value="LOW-PRIORITY"
                                 {...register('priority')}
                             />
-                            <label htmlFor="low">LOW PRIORITY</label>
+                            <label htmlFor="low">
+                                <span className={Styles.variant_low} ></span>
+                                LOW PRIORITY
+                            </label>
                         </div>
                     </div>
                     {errors.priority && <span className={Styles.priority_error}>{errors.priority.message}</span>}
@@ -164,7 +173,7 @@ export default function AddTask({ setAddTask }) {
             <section className={Styles.assignee}>
                 <label htmlFor="assignee" className={Styles.assignee_label}>Assign To</label>
                 <Dropdown
-                    title={"Select a user"}
+                    title={"Add a assignee"}
                     onSelect={handleAssigneeChange}
                     heightStyle={{ height: "fit-content" }}
                     options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}
@@ -180,7 +189,7 @@ export default function AddTask({ setAddTask }) {
                         <li key={index} className={Styles.checklist_item}>
                             <Checkbox
                                 isChecked={task?.isDone}
-                                labelId={index}
+                                labelId={uuidv4()}
                                 onChange={() => handleTaskToggle(index)}
                             />
                             <input
@@ -207,14 +216,8 @@ export default function AddTask({ setAddTask }) {
                 <div className={Styles.due_date}>
                     <DatePicker
                         selected={dueDate}
-                        onChange={handleDateChange}
-                        placeholderText="Select Due Date"
-                        dateFormat="MM/dd/yyyy"
-                        popperPlacement="bottom-start"
-                        className={`${Styles.customDatepickerInput} ${Styles.date_picker_input}`}
-                        popperClassName={Styles.customDatepickerPopper}
+                        onDateChange={handleDateChange}
                         minDate={new Date()}
-                        id={Styles.due}
                     />
                 </div>
 

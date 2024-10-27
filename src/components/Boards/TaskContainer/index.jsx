@@ -1,12 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserTasks } from '../../../slices/taskSlice';
 import TaskCategory from './TaskCategory';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Styles from './TaskContainer.module.css';
 
 export default function TaskContainer() {
     const dispatch = useDispatch();
     const { tasks, loading } = useSelector((state) => state.tasks);
+    const [isUpdatingCategory, setIsUpdatingCategory] = useState(false);
 
     const categorizedTasks = {
         Backlog: [],
@@ -25,8 +26,10 @@ export default function TaskContainer() {
         }
     });
 
-    const handleCategoryUpdate = () => {
-        dispatch(fetchUserTasks()); 
+    const handleCategoryUpdate = async () => {
+        setIsUpdatingCategory(true);
+        await dispatch(fetchUserTasks());
+        setIsUpdatingCategory(false);
     };
 
     return (
@@ -38,7 +41,7 @@ export default function TaskContainer() {
                         title={category}
                         tasks={categoryTasks}
                         onCategoryUpdate={handleCategoryUpdate} 
-                        loading={loading}
+                        loading={loading && !isUpdatingCategory}
                     />
                 ))
             }

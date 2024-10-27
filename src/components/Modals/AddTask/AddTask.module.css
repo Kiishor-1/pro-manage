@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    min-width: 600px;
+    min-width: 632px;
     min-height: 500px;
 }
 
@@ -33,6 +33,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    gap: 8px;
     width: 100%;
 }
 
@@ -43,6 +44,9 @@
 
 .all_priorities {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .error {
@@ -58,12 +62,7 @@
 
 
 .priority_item {
-    display: inline-block;
-    padding: 0.8rem;
-    border: 2px solid transparent;
-    border-radius: 0.5rem;
     cursor: pointer;
-    transition: border-color 0.3s ease;
 }
 
 .priority_item input[type="radio"] {
@@ -71,17 +70,37 @@
 }
 
 .priority_item label {
-    font-size: 0.8rem;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 500;
     color: #333;
-    border: 2px solid gainsboro;
+    border: 1px solid gainsboro;
     border-radius: 0.5rem;
-    padding: 0.3rem;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.priority_item label span{
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+}
+
+.variant_high{
+    background: #FF2473;
+}
+.variant_moderate{
+    background: #18B0FF;
+}
+.variant_low{
+    background: #63C05B;
 }
 
 .priority_item input[type="radio"]:checked+label {
-    border: 2px solid #317F8B;
-    border-radius: 0.5rem;
-    padding: 0.3rem;
+    background: #EEECEC;
+    border: none;
 }
 
 .assignee {
@@ -90,9 +109,10 @@
 }
 
 .assignee_label {
-    font-size: 0.9rem;
+    font-size: 14px;
+    line-height: 24px;
     font-weight: 500;
-    min-width: 6rem;
+    min-width: 5rem;
 }
 
 .checklists {
@@ -223,17 +243,18 @@ button.submit {
 }
 
 .date_picker_input {
-    padding: 0.5rem;
-    border: 2px solid gainsboro;
-    border-radius: 0.5rem;
+    padding: 0.7rem 0;
+    border: 1px solid gainsboro;
+    border-radius: 12px;
     width: 100%;
-    width: 8rem;
+    width: 185px;
     cursor: pointer;
     outline: none;
     z-index: 9999;
     font-weight: 500;
     text-align: center;
     color: #707070;
+    font-family: 'Poppins';
 }
 
 

@@ -19,16 +19,17 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* gap: 0.5rem; */
+    gap: 0rem;
 }
 
 .authBannerSection h2 {
     color: white;
     font-weight: 600;
     font-size: 33.08px;
-    line-height: 66.15px;
+    /* line-height: 66.15px; */
     text-align: center;
     margin: 0;
+    padding: 0;
 }
 
 .authBannerSection p {
@@ -37,6 +38,7 @@
     line-height: 38.59px;
     text-align: center;
     margin: 0;
+    padding: 0;
 }
 
 .auth_image_container {
@@ -167,6 +169,9 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 button.auth_register {
@@ -177,12 +182,17 @@ button.auth_register {
     color: white;
     background-color: #17A2B8;
     cursor: pointer;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .account_check {
     text-decoration: none;
-    font-size: 0.78rem;
-    color: rgb(116, 116, 116);
+    color: #828282;
+    font-size: 19.29px;
+    line-height: 26.28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 @media screen and (max-width:500px) {
