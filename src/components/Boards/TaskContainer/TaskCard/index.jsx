@@ -32,9 +32,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
     };
 
     const handleCategoryUpdate = async (newCategory) => {
-        if(categoryUpdateLoading){
-            setLoadingCategories((prev) => ({ ...prev, [newCategory]: true }));
-        }
+        setLoadingCategories((prev) => ({ ...prev, [newCategory]: true }));
 
         await dispatch(updateTaskCategory({ taskId: task._id, newCategory }))
             .then(() => {
