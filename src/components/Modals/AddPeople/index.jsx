@@ -87,7 +87,7 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                         >
                             Cancel
                         </button>
-                        <button className={Styles.submit}>Add User</button>
+                        <button className={Styles.submit}>Add Email</button>
                     </div>
                 </>
             )}

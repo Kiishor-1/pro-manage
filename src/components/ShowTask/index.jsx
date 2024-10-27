@@ -59,34 +59,6 @@ export default function ShowTask() {
                                         </li>
                                     ))
                                 }
-                                {
-                                    task?.checkLists.length > 0 &&
-                                    task?.checkLists?.map((item, id) => (
-                                        <li key={id} className={Styles.checklist}>
-                                            <div className={Styles.check_item}>
-                                                <Checkbox
-                                                    labelId={id}
-                                                    isChecked={item?.isDone}
-                                                />
-                                                <label htmlFor={id}>{item?.tag || ""}</label>
-                                            </div>
-                                        </li>
-                                    ))
-                                }
-                                {
-                                    task?.checkLists.length > 0 &&
-                                    task?.checkLists?.map((item, id) => (
-                                        <li key={id} className={Styles.checklist}>
-                                            <div className={Styles.check_item}>
-                                                <Checkbox
-                                                    labelId={id}
-                                                    isChecked={item?.isDone}
-                                                />
-                                                <label htmlFor={id}>{item?.tag || ""}</label>
-                                            </div>
-                                        </li>
-                                    ))
-                                }
                             </ul>
                         </section>
                         {

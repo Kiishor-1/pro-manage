@@ -13,6 +13,7 @@
     font-size: 0.85rem;
     font-weight: 600;
     padding: 1rem 0 0 0;
+    font-family: 'Noto Sans';
 }
 
 .destroy_task{
@@ -31,6 +32,7 @@ button.cancel {
     background-color: white;
     width: 100%;
     cursor: pointer;
+    font-family: "Poppins", sans-serif;
 }
 
 button.submit {
@@ -41,4 +43,5 @@ button.submit {
     border: none;
     width: 100%;
     cursor: pointer;
+    font-family: "Poppins", sans-serif;
 }
