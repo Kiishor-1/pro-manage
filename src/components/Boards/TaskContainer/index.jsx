@@ -7,7 +7,7 @@ import Styles from './TaskContainer.module.css';
 export default function TaskContainer() {
     const dispatch = useDispatch();
     const { tasks, loading } = useSelector((state) => state.tasks);
-    const [isUpdatingCategory, setIsUpdatingCategory] = useState(false);
+    // const [isUpdatingCategory, setIsUpdatingCategory] = useState(false);
 
     const categorizedTasks = {
         Backlog: [],
@@ -27,9 +27,9 @@ export default function TaskContainer() {
     });
 
     const handleCategoryUpdate = async () => {
-        setIsUpdatingCategory(true);
+        // setIsUpdatingCategory(true);
         await dispatch(fetchUserTasks());
-        setIsUpdatingCategory(false);
+        // setIsUpdatingCategory(false);
     };
 
     return (
@@ -41,7 +41,7 @@ export default function TaskContainer() {
                         title={category}
                         tasks={categoryTasks}
                         onCategoryUpdate={handleCategoryUpdate} 
-                        loading={loading && !isUpdatingCategory}
+                        loading={loading}
                     />
                 ))
             }
