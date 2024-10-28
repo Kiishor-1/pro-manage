@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../slices/authSlice';
+import { isStrongPassword } from '../../helpers/isStrongPassword';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -34,38 +35,37 @@ export default function Register() {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData((prev) => {
-      const { value, name } = e.target;
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    const { value, name } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handlePasswordView = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleConfirmPasswordView = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const handlePasswordView = () => setShowPassword(!showPassword);
+  const handleConfirmPasswordView = () => setShowConfirmPassword(!showConfirmPassword);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newErrors = {};
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm Password is required";
     else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
-
+  
+    if (formData.password && !isStrongPassword(formData.password)) {
+      newErrors.password = "Password does not meet the strength requirements";
+    }
+  
     setErrors(newErrors);
 
-    // Show a toast for each field-specific error
-    Object.values(newErrors).forEach(error => toast.error(error));
-
+    const errorMessages = Object.values(newErrors);
+    if (errorMessages.length > 0) {
+      toast.error(errorMessages[0]);
+    }
+  
     if (Object.keys(newErrors).length === 0) {
       dispatch(registerUser(formData))
         .then((result) => {
@@ -79,6 +79,7 @@ export default function Register() {
         });
     }
   };
+  
 
   return (
     <div className={Styles.register}>

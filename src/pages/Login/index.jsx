@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../slices/authSlice';
+import { isStrongPassword } from '../../helpers/isStrongPassword';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,11 +49,16 @@ export default function Login() {
 
     const newErrors = {};
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (!isStrongPassword(formData.password)) {
+      return;
+    }
 
-    // Show a toast for each specific error
-    Object.values(newErrors).forEach(error => toast.error(error));
-
+    const firstError = Object.values(newErrors)[0];
+    if (firstError) {
+      toast.error(firstError);
+    }
     if (Object.keys(newErrors).length === 0) {
       dispatch(login(formData))
         .then((result) => {
