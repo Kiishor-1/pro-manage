@@ -77,7 +77,7 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                         options={allUsers.map((user) => { return { email: user.email, name: user?.name } }
                         )}
                         onSelect={handleSelectUser}
-                        heightStyle={{height:"100px"}}
+                        // heightStyle={{height:"100px"}}
                     />
                     <div className={Styles.form_buttons}>
                         <button
