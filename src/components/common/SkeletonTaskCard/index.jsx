@@ -1,10 +1,13 @@
-import Styles from './SkeletonTaskCard.module.css'; // Define custom styles
+import Styles from './SkeletonTaskCard.module.css';
 
 export default function SkeletonTaskCard() {
     return (
         <div className={Styles.skeleton_task_card}>
             <div className={Styles.skeleton_header}>
-                <span className={Styles.skeleton_priority}></span>
+                <span className={Styles.skeleton_priority}>
+                    <div className={Styles.priority}></div>
+                    <div className={Styles.assignee}></div>
+                </span>
                 <span className={Styles.skeleton_options}></span>
             </div>
             <div className={Styles.skeleton_body}>

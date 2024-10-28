@@ -27,7 +27,7 @@ export default function EditTask({ setEditTask, task }) {
         if (task) {
             setValue('title', task?.title || "");
             setValue('priority', task?.priority || "");
-            setSelectedDate(task?.createdAt ? new Date(task.createdAt) : null);
+            setSelectedDate(task?.dueDate ? new Date(task.dueDate) : null);
             setValue('assignee', task?.assignee?.email || "");
             setCheckLists(task?.checkLists || []);
         }

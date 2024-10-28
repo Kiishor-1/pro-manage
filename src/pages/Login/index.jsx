@@ -51,7 +51,8 @@ export default function Login() {
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (!isStrongPassword(formData.password)) {
+    }
+    else if (!isStrongPassword(formData.password)) {
       return;
     }
 

@@ -156,27 +156,6 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                         {openChecklist ? <FiChevronUp /> : <FiChevronDown />}
                     </span>
                 </div>
-                {/* {
-                    openChecklist && (
-                        <ul className={Styles.checklists_container}>
-                            {task?.checkLists.length > 0 &&
-                                task?.checkLists.map((item, index) => (
-                                    <li key={index} className={Styles.checklist}>
-                                        <div className={Styles.check_item}>
-                                            <Checkbox
-                                                labelId={uuidv4()}
-                                                isChecked={item?.isDone}
-                                            />
-                                            <label htmlFor={`checklist-${index}`} className={Styles.item_label}>
-                                                {item?.tag || ""}
-                                            </label>
-                                        </div>
-                                    </li>
-                                ))}
-                        </ul>
-
-                    )
-                } */}
                 <ul className={`${Styles.checklists_container} ${openChecklist ? Styles.open : ''}`}>
                     {task?.checkLists.length > 0 &&
                         task?.checkLists.map((item, index) => (
