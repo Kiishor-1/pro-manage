@@ -37,7 +37,7 @@
 }
 
 .nav_item {
-    padding: 0.5rem 2rem;
+    padding: 0.6rem 2rem;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -65,7 +65,7 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 1.3rem 1.9rem;
+    padding: 1.7rem 1.9rem;
     width: 100%;
     gap: 0.6rem;
     font-weight: 700;

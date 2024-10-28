@@ -94,8 +94,14 @@
 }
 
 .collapse {
-    background-color: gainsboro;
-    padding: 0 0.3rem;
+    background: #EEECEC;
+    color: #767575;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3.2px;
 }
 
 .checklists_container {
@@ -157,7 +163,7 @@ input[type="checkbox"] {
     /* flex: 1; */
     font-size: 0.6rem;
     padding: 0.2rem 0.6rem;
-    background-color: #ca3434;
+    background: #CF3636;
     border-radius: 0.5rem;
     color: white;
 }
