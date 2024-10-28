@@ -34,6 +34,8 @@
     color: #ca3434;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
+    position: relative;
+    z-index:1;
 }
 
 .submit {
@@ -47,6 +49,8 @@
     border: none;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
+    position: relative;
+    z-index:1;
 }
 
 .form_buttons{

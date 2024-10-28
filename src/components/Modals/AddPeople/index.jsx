@@ -72,12 +72,12 @@ export default function AddPeopleModal({ setAddPeopleModal }) {
                         Add people to the board
                     </label>
                     <Dropdown
-                        title="Select a user"
+                        title="Enter the email"
                         btnText="Add"
                         options={allUsers.map((user) => { return { email: user.email, name: user?.name } }
                         )}
                         onSelect={handleSelectUser}
-                        heightStyle={{height:"100px"}}
+                        // heightStyle={{height:"100px"}}
                     />
                     <div className={Styles.form_buttons}>
                         <button
