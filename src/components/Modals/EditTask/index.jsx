@@ -10,6 +10,7 @@ import Dropdown from '../../common/Dropdown';
 import Checkbox from '../../common/Checkbox';
 import Badge from '../../common/Badge';
 import { updateTask } from '../../../slices/taskSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
@@ -188,7 +189,7 @@ export default function EditTask({ setEditTask, task }) {
                     {checkLists.map((task, index) => (
                         <li key={index} className={Styles.checklist_item}>
                             <Checkbox
-                                labelId={index}
+                                labelId={uuidv4()}
                                 isChecked={task?.isDone}
                                 onChange={() => handleTaskToggle(index)}
                             />

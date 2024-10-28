@@ -183,7 +183,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                             <li key={index} className={Styles.checklist}>
                                 <div className={Styles.check_item}>
                                     <Checkbox
-                                        labelId={index}
+                                        labelId={uuidv4()}
                                         isChecked={item?.isDone}
                                     />
                                     <label htmlFor={`checklist-${index}`} className={Styles.item_label}>
