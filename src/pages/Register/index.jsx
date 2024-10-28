@@ -1,16 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Register.module.css';
-import AuthImage from '../../assets/images/authImage.png'
+import AuthImage from '../../assets/images/authImage.png';
 import Mail from '../../assets/images/email.svg';
-import Eye from '../../assets/images/show.svg'
-import EyeOff from '../../assets/images/hide.svg'
-import User from '../../assets/images/Profile.svg'
-import Lock from '../../assets/images/lock.svg'
+import Eye from '../../assets/images/show.svg';
+import EyeOff from '../../assets/images/hide.svg';
+import User from '../../assets/images/Profile.svg';
+import Lock from '../../assets/images/lock.svg';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../slices/authSlice';
-
 
 export default function Register() {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ export default function Register() {
     }
   }, [user, token, navigate]);
 
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const initialValue = {
@@ -31,8 +29,9 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-  }
+  };
   const [formData, setFormData] = useState(initialValue);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData((prev) => {
@@ -40,37 +39,46 @@ export default function Register() {
       return {
         ...prev,
         [name]: value,
-      }
-    })
-  }
+      };
+    });
+  };
 
   const handlePasswordView = () => {
     setShowPassword(!showPassword);
-  }
+  };
+
   const handleConfirmPasswordView = () => {
     setShowConfirmPassword(!showConfirmPassword);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      toast.error('Provide all the required fields');
-      return;
+
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm Password is required";
+    else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+
+    setErrors(newErrors);
+
+    // Show a toast for each field-specific error
+    Object.values(newErrors).forEach(error => toast.error(error));
+
+    if (Object.keys(newErrors).length === 0) {
+      dispatch(registerUser(formData))
+        .then((result) => {
+          if (result.type === 'auth/registerUser/fulfilled') {
+            setFormData(initialValue);
+            navigate('/');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-
-
-
-    dispatch(registerUser(formData))
-      .then((result) => {
-        if (result.type === 'auth/registerUser/fulfilled') {
-          setFormData(initialValue);
-          navigate('/');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  };
 
   return (
     <div className={Styles.register}>
@@ -82,58 +90,86 @@ export default function Register() {
           </div>
         </div>
         <h2>Welcome aboard my friend</h2>
-        <p>just a couple of clicks and we start</p>
+        <p>Just a couple of clicks and we start</p>
       </div>
       <div className={Styles.auth_form_container}>
         <form onSubmit={handleSubmit} className={Styles.register__form}>
           <p className={Styles.heading}>Register</p>
           <div className={Styles.inputs}>
-            <div className="">
-              <input type="text" name='name' placeholder='Name' value={formData.name} onChange={handleChange} />
+            <div>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
               <span className={Styles.icon1}>
                 <img src={User} alt="user" />
               </span>
             </div>
-            <div className="">
-              <input type="email" name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
               <span className={`${Styles.icon1} ${Styles.icon1_email}`}>
                 <img className={Styles.email_icon} src={Mail} alt="email" />
               </span>
             </div>
-            <div className="">
-              <input type={`${showPassword ? "text" : "password"}`} name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
+            <div>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
               <span className={Styles.icon1}>
                 <img src={Lock} alt="lock" />
               </span>
               <span className={Styles.icon2}>
-                {showPassword ?
-                  <img src={EyeOff} onClick={handlePasswordView} />
-                  :
-                  <img src={Eye} onClick={handlePasswordView} />
-                }
+                {showPassword ? (
+                  <img src={EyeOff} onClick={handlePasswordView} alt="hide" />
+                ) : (
+                  <img src={Eye} onClick={handlePasswordView} alt="show" />
+                )}
               </span>
             </div>
-            <div className="">
-              <input type={`${showConfirmPassword ? "text" : "password"}`} name='confirmPassword' placeholder='Confirm Password' value={formData.confirmPassword} onChange={handleChange} />
+            <div>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
               <span className={Styles.icon1}>
                 <img src={Lock} alt="lock" />
               </span>
               <span className={Styles.icon2}>
-                {showConfirmPassword ?
-                  <img src={EyeOff} onClick={handleConfirmPasswordView} /> 
-                  :
-                  <img src={Eye} onClick={handleConfirmPasswordView} />
-                }
+                {showConfirmPassword ? (
+                  <img src={EyeOff} onClick={handleConfirmPasswordView} alt="hide" />
+                ) : (
+                  <img src={Eye} onClick={handleConfirmPasswordView} alt="show" />
+                )}
               </span>
             </div>
           </div>
           <div className={Styles.button_groups}>
             <button className={Styles.auth_register}>Register</button>
-            <Link className={Styles.account_check} to={"/"}>Have an account?</Link>
-            <Link to={"/"} className={Styles.auth_login}>Log in</Link>
+            <Link className={Styles.account_check} to={"/"}>
+              Have an account?
+            </Link>
+            <Link to={"/"} className={Styles.auth_login}>
+              Log in
+            </Link>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
