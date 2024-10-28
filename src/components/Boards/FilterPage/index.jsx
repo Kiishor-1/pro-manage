@@ -9,14 +9,15 @@ import AddPeopleIcon from '../../../assets/images/add.svg'
 
 export default function FilterPage() {
     const [addPeopleModal, setAddPeopleModal] = useState(false);
-    const [filter, setFilter] = useState(localStorage.getItem('taskFilter') || 'week');
+    const [filter, setFilter] = useState('Apply Filter');
+    // const [filter, setFilter] = useState(localStorage.getItem('taskFilter') || 'Apply Filter');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { tasks, loading } = useSelector((state) => state.tasks);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchFilteredTasks(filter));
-        localStorage.setItem('taskFilter', filter);
+        // localStorage.setItem('taskFilter', filter);
     }, [filter, dispatch]);
 
 
@@ -43,7 +44,7 @@ export default function FilterPage() {
                     className={Styles.dropdown_toggle}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                    {filter === 'today' ? 'Today' : filter === 'week' ? 'This Week' : 'This Month'}
+                    {filter === 'today' ? 'Today' : filter === 'week' ? 'This Week' : filter === 'month'? 'This Month':'Apply Filter'}
                     <FaChevronDown className={Styles.chevron_icon} />
                 </div>
 
@@ -67,6 +68,7 @@ export default function FilterPage() {
                         >
                             This Month
                         </div>
+                        <span className={Styles.clear_filter} onClick={()=>handleFilterChange('Apply Filter')}>Clear Filter</span>
                     </div>
                 )}
             </div>
