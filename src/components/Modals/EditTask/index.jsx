@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
-export default function EditTask({ setEditTask, task }) {
+export default function EditTask({ setEditTask, task ,onCategoryUpdate}) {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, setValue, setError, clearErrors } = useForm();
 
@@ -102,6 +102,7 @@ export default function EditTask({ setEditTask, task }) {
         try {
             const res = await dispatch(updateTask({ taskId: task._id, updateData: formData }));
             if (res.type === 'tasks/updateTask/fulfilled') {
+                onCategoryUpdate();
                 setEditTask(false);
             }
         } catch (error) {
@@ -174,7 +175,7 @@ export default function EditTask({ setEditTask, task }) {
             <section className={Styles.assignee}>
                 <label htmlFor="assignee" className={Styles.assignee_label}>Assign To</label>
                 <Dropdown
-                    title={"Add a assignee"}
+                    title={task?.assignee?.email || "Add a assignee"}
                     onSelect={(email)=>handleAssignUser(email)}
                     heightStyle={{ height: "fit-content" }}
                     options={allUsers.map((user) => ({ email: user.email, name: user?.name }))}

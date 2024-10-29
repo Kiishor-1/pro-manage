@@ -79,7 +79,7 @@ export default function TaskCategory({ title, tasks, onCategoryUpdate, loading }
             {
                 addTask &&
                 <Modal show={addTask} onClose={() => setAddTask(false)}>
-                    <AddTask setAddTask={setAddTask} />
+                    <AddTask setAddTask={setAddTask} onCategoryUpdate={onCategoryUpdate} />
                 </Modal>
             }
         </div>

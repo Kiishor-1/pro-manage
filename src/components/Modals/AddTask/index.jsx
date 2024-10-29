@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const { GET_ALL_USERS } = USER_ENDPOINTS;
 
-export default function AddTask({ setAddTask }) {
+export default function AddTask({ setAddTask , onCategoryUpdate}) {
     const dispatch = useDispatch();
     const [checkLists, setCheckLists] = useState([]);
     const [dueDate, setDueDate] = useState(null);
@@ -101,6 +101,7 @@ export default function AddTask({ setAddTask }) {
 
         await dispatch(createTask(taskData)).then((res) => {
             if (res.type === 'tasks/createTask/fulfilled') {
+                onCategoryUpdate();
                 setAddTask(false);
             }
         }).catch((error) => {

@@ -219,7 +219,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             {
                 editTask &&
                 <Modal show={true}>
-                    <EditTask task={task} setEditTask={setEditTask} />
+                    <EditTask task={task} setEditTask={setEditTask} onCategoryUpdate={onCategoryUpdate} />
                 </Modal>
             }
 
