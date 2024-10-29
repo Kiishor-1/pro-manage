@@ -148,7 +148,7 @@ input[type="checkbox"] {
     font-family: 'Poppins';
 }
 
-@media screen and (max-width:550px) {
+@media screen and (max-width:768px) {
     .show_page{
         padding: 2rem 1rem;
     }
