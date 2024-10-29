@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { AUTH_ENDPOINTS, USER_ENDPOINTS } from '../services/api';
 import axios from "axios";
 
-const { REGISTER, LOGIN } = AUTH_ENDPOINTS;
+const { REGISTER, LOGIN, LOGOUT_USER } = AUTH_ENDPOINTS;
 const { UPDATE_USER } = USER_ENDPOINTS;
 
 
@@ -17,7 +17,7 @@ export const isTokenExpired = (token) => {
         return payload.exp < now;
     } catch (error) {
         console.error('Error during checking token expiration:', error);
-        return true; 
+        return true;
     }
 };
 
@@ -111,7 +111,7 @@ export const updateUser = createAsyncThunk(
             toast.dismiss(toastId);
             toast.success('User updated successfully. Please log in again.');
             dispatch(logout());
-            
+
             return response?.data?.user;
         } catch (error) {
             toast.dismiss(toastId);
@@ -120,6 +120,36 @@ export const updateUser = createAsyncThunk(
         }
     }
 );
+
+
+export const logoutUser = createAsyncThunk(
+    'auth/logoutUser',
+    async (_, { dispatch, getState, rejectWithValue }) => {
+        try {
+            const token = getState().auth.token;
+
+            if (!token) {
+                return rejectWithValue('No token provided, user is not logged in');
+            }
+            const response = await axios.post(LOGOUT_USER,{}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.data?.success)
+                dispatch(logout());
+            toast.success('User logged out successfully');
+            return true;
+        } catch (error) {
+            console.error('Error during logout:', error);
+            toast.error(error.response?.data?.error || 'Failed to logout');
+            return rejectWithValue(error?.response?.data?.error || 'Failed to logout');
+        }
+    }
+);
+
 
 const getUserFromLocalStorage = () => {
     const user = localStorage.getItem("user");
@@ -166,8 +196,9 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload || action.error;
                 state.status = 'failed';
-            })
+            });
 
+        builder
             .addCase(login.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
@@ -184,8 +215,9 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload || action.error;
                 state.status = 'failed';
-            })
+            });
 
+        builder
             .addCase(updateUser.pending, (state) => {
                 state.isLoading = true;
             })
@@ -195,6 +227,21 @@ const authSlice = createSlice({
             .addCase(updateUser.rejected, (state, action) => {
                 state.error = action.payload;
                 state.isLoading = false;
+            });
+
+        builder
+            .addCase(logoutUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(logoutUser.fulfilled, (state) => {
+                state.isLoading = false;
+                state.status = 'succeed';
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload || action.error;
+                state.status = 'failed';
             });
     },
 });

@@ -3,6 +3,7 @@ const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 export const AUTH_ENDPOINTS = {
     REGISTER: `${BASE_URL}/auth/register`,
     LOGIN: `${BASE_URL}/auth/login`,
+    LOGOUT_USER:`${BASE_URL}/auth/logout`
 }
 
 export const TASK_ENDPOINTS = {
@@ -18,5 +19,5 @@ export const TASK_ENDPOINTS = {
 export const USER_ENDPOINTS = {
     GET_ALL_USERS:`${BASE_URL}/users`,
     ADD_PEOPLE:`${BASE_URL}/users/add-people`,
-    UPDATE_USER:`${BASE_URL}/users/update`
+    UPDATE_USER:`${BASE_URL}/users/update`,
 }
