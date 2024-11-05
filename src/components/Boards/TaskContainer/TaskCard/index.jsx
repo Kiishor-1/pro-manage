@@ -91,21 +91,20 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             return Styles.done_task;
         }
 
+        if (task.category === 'Backlog') {
+            return Styles.backlog_task;
+        }
+
         const dueDateObj = new Date(task.dueDate);
         const currentDate = new Date();
 
-        if (dueDateObj < currentDate) {
-            return ['Backlog', 'InProgress', 'ToDo'].includes(task?.category)
-                ? Styles.due_date
-                : Styles.done_task;
+        if (['InProgress', 'ToDo'].includes(task.category)) {
+            return dueDateObj < currentDate ? Styles.backlog_task : Styles.due_date;
         }
 
         return Styles.due_date;
     };
 
-    // useEffect(() => {
-    //     console.log("editTask:", editTask);  
-    // }, [editTask]);
 
 
     return (
@@ -146,7 +145,9 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                     )}
                 </aside>
             </section>
-            <p className={Styles.task_title}>{task?.title}</p>
+            <p className={Styles.task_title} title={`${task?.title}`}>
+                {task?.title.slice(0, 25)}...
+            </p>
             <section className={Styles.checklists}>
                 <div className={Styles.checklist_dropdown}>
                     <p className={Styles.metrics}>
