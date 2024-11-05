@@ -146,7 +146,7 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
                 </aside>
             </section>
             <p className={Styles.task_title} title={`${task?.title}`}>
-                {task?.title.slice(0, 25)}...
+                {task?.title.slice(0, 25)}{task?.title.length > 25 && "..."}
             </p>
             <section className={Styles.checklists}>
                 <div className={Styles.checklist_dropdown}>
