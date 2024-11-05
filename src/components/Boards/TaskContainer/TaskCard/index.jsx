@@ -91,21 +91,21 @@ export default function TaskCard({ task, collapseAll, onCategoryUpdate }) {
             return Styles.done_task;
         }
 
+        if (task.category === 'Backlog') {
+            return Styles.backlog_task;
+        }
+
         const dueDateObj = new Date(task.dueDate);
         const currentDate = new Date();
 
         if (dueDateObj < currentDate) {
-            return ['Backlog', 'InProgress', 'ToDo'].includes(task.category)
-                ? Styles.due_date
+            return ['InProgress', 'ToDo'].includes(task.category)
+                ? Styles.overdue_task
                 : Styles.done_task;
         }
 
         return Styles.due_date;
     };
-
-    // useEffect(() => {
-    //     console.log("editTask:", editTask);  
-    // }, [editTask]);
 
 
     return (
